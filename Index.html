@@ -1,0 +1,1099 @@
+<title>Open Studio Availability</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Syne:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d0c0a;
+    --surface:#14190f;
+    --surface-raised:#1b2317;
+    --forest:#2d6b3a;
+    --moss:#5c9464;
+    --paper:#f0ece3;
+    --muted:rgba(240,236,227,.56);
+    --faint:rgba(240,236,227,.34);
+    --line:rgba(240,236,227,.1);
+    --line-strong:rgba(240,236,227,.18);
+    --ghost:rgba(240,236,227,.04);
+    --gold:#c3993f;
+    --gold-fill:rgba(195,153,63,.22);
+    --gold-dim:rgba(195,153,63,.12);
+    --focus:#4fd68c;
+    --weekend:rgba(92,148,100,.07);
+    --danger:#c05a4a;
+    --font-display:'Cormorant Garamond', Georgia, serif;
+    --font-ui:'Syne', system-ui, sans-serif;
+    --font-mono:'IBM Plex Mono', 'Courier New', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--font-ui);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--gold-fill); color:var(--paper); }
+  button, input{ font:inherit; }
+
+  .page{
+    max-width:640px;
+    margin:0 auto;
+    padding:36px 20px 70px;
+    position:relative;
+  }
+  .page::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:radial-gradient(ellipse 700px 420px at 50% -8%, rgba(92,148,100,.10), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .page > *{ position:relative; z-index:1; }
+
+  /* masthead */
+  .masthead{
+    display:flex;
+    align-items:baseline;
+    justify-content:center;
+    margin-bottom:10px;
+  }
+  .masthead h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-style:normal;
+    font-size:clamp(40px,10vw,58px);
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin:0;
+    text-align:center;
+    color:var(--paper);
+    text-wrap:balance;
+  }
+  .masthead-rule{
+    width:64px;
+    height:2px;
+    background:var(--moss);
+    margin:14px auto 28px;
+  }
+
+  .admin-link{
+    position:absolute;
+    top:36px;
+    right:20px;
+    font-family:var(--font-ui);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.04em;
+    color:var(--faint);
+    background:none;
+    border:none;
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    z-index:2;
+  }
+  .admin-link:hover{ color:var(--moss); }
+  .admin-link:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+
+  .step{ display:none; }
+  .step.active{ display:block; }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--moss);
+    margin:0 0 8px;
+    text-align:center;
+  }
+  h2.question{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-style:italic;
+    font-size:clamp(24px,5vw,30px);
+    line-height:1.12;
+    margin:0 0 22px;
+    text-align:center;
+    text-wrap:balance;
+    color:var(--paper);
+  }
+
+  /* step 1: email form */
+  .form-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:26px;
+    max-width:420px;
+    margin:0 auto;
+  }
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-family:var(--font-ui);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--faint);
+    margin-bottom:7px;
+  }
+  .field input{
+    width:100%;
+    background:var(--surface-raised);
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    padding:11px 12px;
+    color:var(--paper);
+    font-size:14px;
+  }
+  .field input::placeholder{ color:var(--faint); }
+  .field input:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .field-msg{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    color:var(--danger);
+    margin-top:6px;
+    display:none;
+  }
+  .field-msg.show{ display:block; }
+
+  .form-actions{ display:flex; flex-direction:column; gap:10px; margin-top:20px; align-items:center; }
+  .decline{
+    font-family:var(--font-ui);
+    font-size:12px;
+    color:var(--faint);
+    background:none;
+    border:none;
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .decline:hover{ color:var(--muted); }
+
+  button.primary{
+    font-family:var(--font-ui);
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    background:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:8px;
+    padding:11px 24px;
+    cursor:pointer;
+    width:100%;
+  }
+  button.primary:disabled{ background:var(--surface-raised); color:var(--faint); border-color:var(--line); cursor:not-allowed; }
+  button:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+
+  /* day + time chips */
+  .daychips{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-bottom:18px;
+  }
+  .daychip{
+    font-family:var(--font-ui);
+    font-size:13px;
+    font-weight:700;
+    color:var(--muted);
+    background:var(--surface);
+    border:1px solid var(--line-strong);
+    border-radius:999px;
+    padding:10px 18px;
+    cursor:pointer;
+  }
+  .daychip.on{ background:var(--forest); color:var(--paper); border-color:var(--forest); }
+  .daychip:hover{ border-color:var(--moss); }
+  .daychip:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+
+  .daypanel{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:12px;
+    animation: fadeRise .4s ease-out both;
+  }
+  .daypanel h3{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-weight:600;
+    font-size:19px;
+    margin:0 0 12px;
+    color:var(--paper);
+  }
+  .bucketrow{ display:flex; gap:8px; flex-wrap:wrap; }
+  .bucketchip{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    font-weight:500;
+    color:var(--muted);
+    background:var(--surface-raised);
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    padding:8px 13px;
+    cursor:pointer;
+    text-align:left;
+  }
+  .bucketchip .name{
+    display:block;
+    font-family:var(--font-ui);
+    font-weight:700;
+    font-size:12px;
+    color:var(--paper);
+    margin-bottom:2px;
+  }
+  .bucketchip.on{ background:var(--gold-dim); border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold); }
+  .bucketchip.on .name{ color:var(--gold); }
+  .bucketchip:hover{ border-color:var(--moss); }
+  .bucketchip:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+
+  /* entrance animation */
+  @keyframes titleReveal{
+    from{ opacity:0; letter-spacing:-.01em; transform:translateY(10px); }
+    to{ opacity:1; letter-spacing:.06em; transform:translateY(0); }
+  }
+  @keyframes ruleGrow{
+    from{ transform:scaleX(0); opacity:0; }
+    to{ transform:scaleX(1); opacity:1; }
+  }
+  @keyframes fadeRise{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .page > .admin-link{ animation:fadeRise .4s ease-out .2s both; }
+  .masthead h1{ animation:titleReveal .9s cubic-bezier(.19,1,.22,1) both; }
+  .masthead-rule{ transform-origin:center; animation:ruleGrow .5s ease-out .55s both; }
+  .step.active > *{ animation:fadeRise .55s cubic-bezier(.19,1,.22,1) both; }
+  .step.active > *:nth-child(1){ animation-delay:.75s; }
+  .step.active > *:nth-child(2){ animation-delay:.85s; }
+  .step.active > *:nth-child(3){ animation-delay:.95s; }
+  .step.active > *:nth-child(4){ animation-delay:1.05s; }
+  .step.active > *:nth-child(5){ animation-delay:1.15s; }
+  .step.active > *:nth-child(6){ animation-delay:1.25s; }
+  .step.active > *:nth-child(n+7){ animation-delay:1.3s; }
+
+  @media (prefers-reduced-motion: reduce){
+    .page > .admin-link, .masthead h1, .masthead-rule, .step.active > *, .daypanel{
+      animation:none !important;
+      opacity:1 !important;
+      transform:none !important;
+      letter-spacing:.06em !important;
+    }
+  }
+
+  /* zone bar */
+  .zonebar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:9px 13px;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+  }
+  .zonebar .globe{ font-size:13px; opacity:.85; }
+  .zonebar .ztext{ font-size:12px; color:var(--paper); }
+  .zonebar .ztext b{ font-weight:600; color:var(--moss); }
+  .zonebar select{
+    margin-left:auto;
+    font-family:var(--font-ui);
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--paper);
+    background:var(--surface-raised);
+    border:1px solid var(--line-strong);
+    border-radius:7px;
+    padding:6px 8px;
+    cursor:pointer;
+  }
+  .zonebar select:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  /* grid */
+  .gridcard{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .gridscroll{ overflow-x:auto; }
+  .gridhead{
+    display:grid;
+    grid-template-columns:38px repeat(7, 1fr);
+    position:sticky;
+    top:0;
+    background:var(--surface);
+    z-index:3;
+    border-bottom:1px solid var(--line-strong);
+    min-width:380px;
+  }
+  .gridhead .corner{ border-right:1px solid var(--line); }
+  .gridhead .daylabel{
+    font-family:var(--font-ui);
+    font-weight:700;
+    font-size:13px;
+    text-align:center;
+    padding:9px 2px;
+    color:var(--faint);
+    border-right:1px solid var(--line);
+  }
+  .gridhead .daylabel.weekend{ background:var(--weekend); color:var(--muted); }
+  .gridhead .daylabel:last-child{ border-right:none; }
+
+  .gridbody{
+    display:grid;
+    grid-template-columns:38px repeat(7, 1fr);
+    min-width:380px;
+    position:relative;
+  }
+  .gutter-cell{
+    font-family:var(--font-mono);
+    font-size:9px;
+    color:var(--faint);
+    text-align:right;
+    padding-right:5px;
+    border-right:1px solid var(--line);
+    position:relative;
+    height:14px;
+  }
+  .gutter-cell span{ position:relative; top:-5px; }
+
+  .cell{
+    height:14px;
+    border-bottom:1px solid var(--line);
+    border-right:1px solid var(--line);
+    cursor:pointer;
+    touch-action:none;
+    position:relative;
+  }
+  .cell:last-child{ border-right:none; }
+  .cell.hour{ border-bottom:1px solid var(--line-strong); }
+  .cell:focus-visible{ outline:2px solid var(--focus); outline-offset:-2px; z-index:2; }
+  .cell.selected{ background:var(--gold-dim); box-shadow:inset 3px 0 0 var(--gold); }
+  .cell.weekend{ background:var(--weekend); }
+  .cell.weekend.selected{ background:var(--gold-dim); }
+
+  /* heatmap */
+  .heat-cell .fill{
+    position:absolute; inset:1px;
+    border-radius:2px;
+    background:var(--moss);
+  }
+  .heat-cell:hover .tip, .heat-cell:focus-visible .tip{ display:block; }
+  .tip{
+    display:none;
+    position:absolute;
+    bottom:calc(100% + 6px);
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--ink);
+    border:1px solid var(--line-strong);
+    color:var(--paper);
+    font-family:var(--font-mono);
+    font-size:10px;
+    padding:4px 7px;
+    border-radius:5px;
+    white-space:nowrap;
+    z-index:5;
+    pointer-events:none;
+  }
+
+  /* controls */
+  .controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .count{ font-family:var(--font-mono); font-size:12px; color:var(--moss); }
+  .count b{ color:var(--paper); font-weight:600; }
+  .btnrow{ display:flex; gap:8px; align-items:center; }
+  button.ghost{
+    font-family:var(--font-ui);
+    font-size:12px;
+    font-weight:600;
+    color:var(--muted);
+    background:transparent;
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+  }
+  button.ghost:hover{ color:var(--paper); border-color:var(--moss); }
+  button.compact-primary{
+    font-family:var(--font-ui);
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--ink);
+    background:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:8px;
+    padding:9px 18px;
+    cursor:pointer;
+  }
+  button.compact-primary:disabled{ background:var(--surface-raised); color:var(--faint); border-color:var(--line); cursor:not-allowed; }
+  button.danger{
+    font-family:var(--font-ui);
+    font-size:12px;
+    font-weight:700;
+    color:var(--paper);
+    background:var(--danger);
+    border:1px solid var(--danger);
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+  }
+  .inline-msg{ font-family:var(--font-mono); font-size:11px; color:var(--muted); margin-top:6px; display:none; }
+  .inline-msg.show{ display:block; }
+
+  .back-link{
+    display:inline-block;
+    font-family:var(--font-ui);
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--faint);
+    background:none;
+    border:none;
+    cursor:pointer;
+    margin-bottom:14px;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .back-link:hover{ color:var(--moss); }
+
+  /* your times list */
+  .yourtimes{ margin-top:22px; padding-top:16px; border-top:1px solid var(--line); }
+  .yourtimes h3{
+    font-family:var(--font-ui);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--faint);
+    margin:0 0 10px;
+  }
+  .yourtimes ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+  .yourtimes li{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:8px 11px;
+    font-family:var(--font-mono);
+    font-size:11.5px;
+  }
+  .yourtimes li .remove{
+    font-family:var(--font-ui);
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--faint);
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:2px 5px;
+  }
+  .yourtimes li .remove:hover{ color:var(--danger); }
+  .yourtimes .empty{ font-family:var(--font-mono); font-size:11.5px; color:var(--faint); background:none; border:none; }
+
+  /* confirmation */
+  .confirm{ text-align:center; padding:50px 20px; }
+  .confirm .mark{ font-size:38px; color:var(--moss); margin-bottom:14px; }
+  .confirm h2{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-weight:600;
+    font-size:28px;
+    margin:0 0 10px;
+  }
+  .confirm p{ color:var(--muted); font-size:13.5px; margin:0 0 22px; }
+
+  /* admin */
+  .ranked{ margin-top:18px; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .ranked h3{
+    font-family:var(--font-ui);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--faint);
+    margin:0;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  table{ width:100%; border-collapse:collapse; }
+  thead th{
+    font-family:var(--font-ui);
+    font-size:9.5px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--faint);
+    text-align:left;
+    padding:8px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  tbody td{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    padding:8px 16px;
+    border-bottom:1px solid var(--line);
+    font-variant-numeric:tabular-nums;
+  }
+  tbody tr{ cursor:pointer; }
+  tbody tr:hover{ background:var(--ghost); }
+  tbody tr:last-child td{ border-bottom:none; }
+  td.rank{ color:var(--faint); width:30px; }
+  td.people{ color:var(--moss); font-weight:600; }
+  .admin-footer{ display:flex; align-items:center; gap:12px; margin-top:16px; }
+
+  .toast{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%) translateY(0);
+    background:var(--surface-raised);
+    border:1px solid var(--line-strong);
+    color:var(--paper);
+    font-family:var(--font-ui);
+    font-size:12.5px;
+    padding:11px 18px;
+    border-radius:10px;
+    box-shadow:0 12px 32px rgba(0,0,0,.4);
+    z-index:20;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+    max-width:90vw;
+    text-align:center;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(-6px); }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+
+  @media (max-width:420px){
+    .admin-link{ position:static; display:block; text-align:right; margin-bottom:8px; }
+    .form-card{ padding:20px; }
+  }
+</style>
+
+<div class="page">
+  <button class="admin-link" id="btn-admin" type="button">Admin view</button>
+
+  <div class="masthead"><h1>Open Studio</h1></div>
+  <div class="masthead-rule"></div>
+
+  <!-- STEP 1: email -->
+  <section class="step active" id="step-email">
+    <h2 class="question">Please let us know if you can attend:</h2>
+    <div class="form-card">
+      <div class="field">
+        <label for="inp-name">Name</label>
+        <input id="inp-name" type="text" placeholder="Your name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="inp-email">Email</label>
+        <input id="inp-email" type="email" placeholder="you@example.com" autocomplete="email">
+        <p class="field-msg" id="email-msg">Enter a valid email to continue.</p>
+      </div>
+      <div class="form-actions">
+        <button class="primary" id="btn-to-grid" type="button">Continue</button>
+        <button class="decline" id="btn-decline" type="button">I can't make it this time</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: grid -->
+  <section class="step" id="step-grid">
+    <button class="back-link" id="btn-back-to-email" type="button">&larr; Back</button>
+    <p class="eyebrow">Step 2 of 2</p>
+    <h2 class="question">What time works best for you?</h2>
+
+    <div class="zonebar">
+      <span class="globe" aria-hidden="true">&#127760;</span>
+      <span class="ztext" id="zone-label">Times shown in <b>Pacific Time (PT)</b></span>
+      <select id="zone-select" aria-label="Change time zone">
+        <option value="America/New_York">Eastern</option>
+        <option value="America/Chicago">Central</option>
+        <option value="America/Denver">Mountain</option>
+        <option value="America/Phoenix">Arizona (no DST)</option>
+        <option value="America/Los_Angeles">Pacific</option>
+      </select>
+    </div>
+
+    <div class="daychips" id="daychips" role="group" aria-label="Which days could work?"></div>
+
+    <div class="daypanels" id="daypanels"></div>
+
+    <div class="controls" id="visitor-controls">
+      <span class="count" id="selcount"><b>0</b> times selected</span>
+      <div class="btnrow">
+        <button class="ghost" id="btn-clear" type="button">Clear all</button>
+        <button class="compact-primary" id="btn-continue" type="button" disabled>Submit</button>
+      </div>
+    </div>
+    <p class="inline-msg" id="continue-msg">Pick at least one time to continue.</p>
+
+    <div class="yourtimes">
+      <h3>Your times</h3>
+      <ul id="yourtimes-list"></ul>
+    </div>
+  </section>
+
+  <!-- STEP 3: confirmation -->
+  <section class="step" id="step-done">
+    <div class="confirm">
+      <div class="mark">&#10003;</div>
+      <h2>You're all set.</h2>
+      <p id="confirm-copy">We'll follow up to confirm a time.</p>
+      <button class="ghost" id="btn-restart" type="button">Start over</button>
+    </div>
+  </section>
+
+  <!-- ADMIN -->
+  <section class="step" id="step-admin">
+    <button class="back-link" id="btn-back-from-admin" type="button">&larr; Back to form</button>
+    <p class="eyebrow">Admin</p>
+    <h2 class="question">Availability heatmap</h2>
+    <div class="gridcard">
+      <div class="gridscroll">
+        <div class="gridhead" id="gridhead-admin"></div>
+        <div class="gridbody" id="gridbody-admin"></div>
+      </div>
+    </div>
+    <div class="ranked">
+      <h3>Top slots</h3>
+      <table>
+        <thead><tr><th>#</th><th>Day</th><th>Time (Pacific)</th><th>People</th><th>% of respondents</th></tr></thead>
+        <tbody id="ranked-body"></tbody>
+      </table>
+    </div>
+    <div class="admin-footer">
+      <button class="ghost" id="btn-reset" type="button">Reset all picks</button>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DAY_LETTERS = ["S","M","T","W","T","F","S"];
+  var DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var SLOT_COUNT = 45;
+  var SLOT_MIN = 20;
+  var WINDOW_START_MIN = 5 * 60;
+
+  var ZONES = [
+    {key:"America/New_York", label:"Eastern"},
+    {key:"America/Chicago", label:"Central"},
+    {key:"America/Denver", label:"Mountain"},
+    {key:"America/Phoenix", label:"Arizona"},
+    {key:"America/Los_Angeles", label:"Pacific"}
+  ];
+
+  function referenceWeekStart(today){
+    var dow = today.getDay();
+    var add = dow === 0 ? 0 : (7 - dow);
+    return new Date(today.getFullYear(), today.getMonth(), today.getDate() + add);
+  }
+  var REF = referenceWeekStart(new Date());
+
+  function wallTimeToUTC(zone, y, m, d, hh, mm){
+    var guess = Date.UTC(y, m - 1, d, hh, mm);
+    for (var i = 0; i < 2; i++){
+      var parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: zone, hourCycle: "h23",
+        year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit"
+      }).formatToParts(new Date(guess));
+      var o = {};
+      parts.forEach(function(p){ o[p.type] = p.value; });
+      var renderedAsUTC = Date.UTC(+o.year, +o.month - 1, +o.day, +o.hour, +o.minute);
+      guess += (Date.UTC(y, m - 1, d, hh, mm) - renderedAsUTC);
+    }
+    return new Date(guess);
+  }
+
+  function slotUTC(ptWeekday, slotIndex){
+    var dayDate = new Date(REF.getFullYear(), REF.getMonth(), REF.getDate() + ptWeekday);
+    var totalMin = WINDOW_START_MIN + slotIndex * SLOT_MIN;
+    var hh = Math.floor(totalMin / 60), mm = totalMin % 60;
+    return wallTimeToUTC("America/Los_Angeles", dayDate.getFullYear(), dayDate.getMonth() + 1, dayDate.getDate(), hh, mm);
+  }
+
+  function localLabel(utcDate, zone, withMinutes){
+    var fmt = new Intl.DateTimeFormat("en-US", {
+      timeZone: zone, hour:"numeric", minute: withMinutes === false ? undefined : "2-digit", hour12:true
+    });
+    return fmt.format(utcDate).replace(" ", "").toUpperCase().replace(/(\d)(AM|PM)/, "$1 $2");
+  }
+
+  function zoneAbbrev(utcDate, zone){
+    var parts = new Intl.DateTimeFormat("en-US", {timeZone: zone, timeZoneName:"short"}).formatToParts(utcDate);
+    var t = parts.find(function(p){ return p.type === "timeZoneName"; });
+    return t ? t.value : "";
+  }
+
+  function detectZone(){
+    try{
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      for (var i=0;i<ZONES.length;i++){ if (ZONES[i].key === tz) return tz; }
+    }catch(e){}
+    return "America/New_York";
+  }
+
+  var BUCKETS = [
+    {name:"Early",     startSlot:0,  endSlotExclusive:9},
+    {name:"Morning",   startSlot:9,  endSlotExclusive:18},
+    {name:"Midday",    startSlot:18, endSlotExclusive:27},
+    {name:"Afternoon", startSlot:27, endSlotExclusive:36},
+    {name:"Evening",   startSlot:36, endSlotExclusive:45}
+  ];
+
+  var state = {
+    zone: detectZone(),
+    selected: new Set(), // "day-bucketIndex"
+    resetArmed: false,
+    contact: {name:"", email:""}
+  };
+  var selectedDays = new Set();
+
+  var mockCounts = buildMockCounts();
+  var MOCK_TOTAL_RESPONDENTS = 34;
+
+  function buildMockCounts(){
+    var counts = {};
+    for (var d=0; d<7; d++){
+      for (var i=0; i<SLOT_COUNT; i++){
+        var minOfDay = WINDOW_START_MIN + i*SLOT_MIN;
+        var hour = minOfDay/60;
+        var isWeekend = (d===0 || d===6);
+        var base;
+        if (!isWeekend && hour >= 17 && hour <= 20.67) base = 10 + Math.round(Math.random()*14);
+        else if (isWeekend && hour >= 9 && hour <= 12) base = 8 + Math.round(Math.random()*12);
+        else base = Math.round(Math.random()*4);
+        counts[d+"-"+i] = Math.max(0, base);
+      }
+    }
+    return counts;
+  }
+
+  // ---------- step navigation ----------
+  var steps = ["step-email","step-grid","step-done","step-admin"];
+  function showStep(id){
+    steps.forEach(function(s){ document.getElementById(s).classList.toggle("active", s === id); });
+    var activeEl = document.getElementById(id);
+    var children = activeEl.children;
+    for (var i=0; i<children.length; i++) children[i].style.animation = "none";
+    void activeEl.offsetWidth; // force reflow so the animation restarts
+    for (var i=0; i<children.length; i++) children[i].style.animation = "";
+  }
+
+  function buildHeader(headEl){
+    headEl.innerHTML = "";
+    var corner = document.createElement("div");
+    corner.className = "corner";
+    headEl.appendChild(corner);
+    for (var d=0; d<7; d++){
+      var cell = document.createElement("div");
+      cell.className = "daylabel" + ((d===0||d===6) ? " weekend" : "");
+      cell.textContent = DAY_LETTERS[d];
+      cell.setAttribute("aria-hidden","true");
+      headEl.appendChild(cell);
+    }
+  }
+
+  // ---------- day + time-of-day chips ----------
+  function bucketTimeOnly(b, zone){
+    var startUtc = slotUTC(1, b.startSlot);
+    var endUtc = new Date(slotUTC(1, b.endSlotExclusive - 1).getTime() + SLOT_MIN*60000);
+    return localLabel(startUtc, zone, false) + " to " + localLabel(endUtc, zone, false);
+  }
+
+  function buildDayChips(){
+    var ABBR = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    var wrap = document.getElementById("daychips");
+    wrap.innerHTML = "";
+    for (var d=0; d<7; d++){
+      var chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "daychip" + (selectedDays.has(d) ? " on" : "");
+      chip.textContent = ABBR[d];
+      chip.setAttribute("aria-pressed", selectedDays.has(d) ? "true" : "false");
+      chip.addEventListener("click", function(dd){
+        return function(){
+          if (selectedDays.has(dd)){
+            selectedDays.delete(dd);
+            for (var bi=0; bi<BUCKETS.length; bi++) state.selected.delete(dd+"-"+bi);
+          } else {
+            selectedDays.add(dd);
+          }
+          buildDayChips();
+          renderDayPanels();
+          updateControls();
+          renderYourTimes();
+        };
+      }(d));
+      wrap.appendChild(chip);
+    }
+  }
+
+  function renderDayPanels(){
+    var wrap = document.getElementById("daypanels");
+    wrap.innerHTML = "";
+    for (var d=0; d<7; d++){
+      if (!selectedDays.has(d)) continue;
+      var panel = document.createElement("div");
+      panel.className = "daypanel";
+      var h3 = document.createElement("h3");
+      h3.textContent = DAY_NAMES[d];
+      panel.appendChild(h3);
+      var row = document.createElement("div");
+      row.className = "bucketrow";
+      BUCKETS.forEach(function(b, bi){
+        var key = d+"-"+bi;
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "bucketchip" + (state.selected.has(key) ? " on" : "");
+        chip.setAttribute("aria-pressed", state.selected.has(key) ? "true" : "false");
+        chip.innerHTML = '<span class="name">' + b.name + '</span>' + bucketTimeOnly(b, state.zone);
+        chip.addEventListener("click", function(kk){
+          return function(){
+            if (state.selected.has(kk)) state.selected.delete(kk); else state.selected.add(kk);
+            renderDayPanels();
+            updateControls();
+            renderYourTimes();
+          };
+        }(key));
+        row.appendChild(chip);
+      });
+      panel.appendChild(row);
+      wrap.appendChild(panel);
+    }
+  }
+
+  function clearAll(){
+    state.selected.clear();
+    selectedDays.clear();
+    buildDayChips();
+    renderDayPanels();
+    updateControls();
+    renderYourTimes();
+  }
+
+  function updateControls(){
+    var n = state.selected.size;
+    document.querySelector("#selcount b").textContent = n;
+    document.getElementById("btn-continue").disabled = n === 0;
+    document.getElementById("continue-msg").classList.toggle("show", n === 0);
+  }
+
+  function renderYourTimes(){
+    var list = document.getElementById("yourtimes-list");
+    list.innerHTML = "";
+    var entries = [];
+    for (var d=0; d<7; d++){
+      for (var bi=0; bi<BUCKETS.length; bi++){
+        if (state.selected.has(d+"-"+bi)) entries.push({d:d, bi:bi});
+      }
+    }
+    if (!entries.length){
+      var li = document.createElement("li");
+      li.className = "empty";
+      li.textContent = "No times selected yet.";
+      list.appendChild(li);
+      return;
+    }
+    entries.forEach(function(e){
+      var b = BUCKETS[e.bi];
+      var text = DAY_NAMES[e.d] + " — " + b.name + " (" + bucketTimeOnly(b, state.zone) + ")";
+      var li = document.createElement("li");
+      var span = document.createElement("span");
+      span.textContent = text;
+      var btn = document.createElement("button");
+      btn.className = "remove";
+      btn.type = "button";
+      btn.textContent = "Remove";
+      btn.setAttribute("aria-label", "Remove " + text);
+      btn.addEventListener("click", function(ee){
+        return function(){
+          state.selected.delete(ee.d+"-"+ee.bi);
+          renderDayPanels();
+          updateControls();
+          renderYourTimes();
+        };
+      }(e));
+      li.appendChild(span);
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+  }
+
+  var zoneSelect = document.getElementById("zone-select");
+  zoneSelect.value = state.zone;
+  function refreshZoneLabel(){
+    var z = ZONES.find(function(z){ return z.key === state.zone; });
+    var sample = slotUTC(1, 20);
+    var abbrev = zoneAbbrev(sample, state.zone);
+    document.getElementById("zone-label").innerHTML = "Times shown in <b>" + z.label + " Time (" + abbrev + ")</b>";
+  }
+  zoneSelect.addEventListener("change", function(){
+    state.zone = zoneSelect.value;
+    refreshZoneLabel();
+    renderDayPanels();
+    renderYourTimes();
+  });
+
+  // ---------- email step ----------
+  var inpName = document.getElementById("inp-name");
+  var inpEmail = document.getElementById("inp-email");
+  var emailMsg = document.getElementById("email-msg");
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  document.getElementById("btn-to-grid").addEventListener("click", function(){
+    var email = inpEmail.value.trim();
+    if (!EMAIL_RE.test(email)){
+      emailMsg.classList.add("show");
+      inpEmail.focus();
+      return;
+    }
+    emailMsg.classList.remove("show");
+    state.contact.name = inpName.value.trim();
+    state.contact.email = email;
+    showStep("step-grid");
+  });
+  document.getElementById("btn-decline").addEventListener("click", function(){
+    showToast("Thanks for letting us know.");
+  });
+  document.getElementById("btn-back-to-email").addEventListener("click", function(){ showStep("step-email"); });
+
+  document.getElementById("btn-clear").addEventListener("click", clearAll);
+  document.getElementById("btn-continue").addEventListener("click", function(){
+    var copy = document.getElementById("confirm-copy");
+    copy.textContent = state.contact.email
+      ? "We'll follow up at " + state.contact.email + " to confirm a time."
+      : "We'll follow up to confirm a time.";
+    showStep("step-done");
+  });
+  document.getElementById("btn-restart").addEventListener("click", function(){
+    inpName.value = ""; inpEmail.value = "";
+    clearAll();
+    showStep("step-email");
+  });
+
+  // ---------- admin ----------
+  var gridheadAdmin = document.getElementById("gridhead-admin");
+  var gridbodyAdmin = document.getElementById("gridbody-admin");
+  gridbodyAdmin.className = "gridbody";
+
+  function buildAdminGrid(){
+    gridbodyAdmin.innerHTML = "";
+    for (var i=0; i<SLOT_COUNT; i++){
+      var row = document.createElement("div");
+      row.style.display = "contents";
+      var gutter = document.createElement("div");
+      gutter.className = "gutter-cell";
+      if (i % 3 === 0){
+        var utc = slotUTC(0, i);
+        gutter.innerHTML = "<span>" + localLabel(utc, "America/Los_Angeles", false) + "</span>";
+      }
+      row.appendChild(gutter);
+      for (var d=0; d<7; d++){
+        var c = document.createElement("div");
+        c.className = "cell heat-cell" + (i % 3 === 0 ? " hour" : "") + ((d===0||d===6) ? " weekend" : "");
+        var count = mockCounts[d+"-"+i] || 0;
+        var opacity = Math.min(1, count / 26);
+        c.innerHTML = count > 0 ? '<div class="fill" style="opacity:' + (opacity*0.85) + '"></div><div class="tip">' + count + ' picked</div>' : "";
+        c.addEventListener("click", function(dd, ii){
+          return function(){ showToast("Would open the exact-date picker, prefilled to the next " + DAY_NAMES[dd] + "."); };
+        }(d, i));
+        row.appendChild(c);
+      }
+      gridbodyAdmin.appendChild(row);
+    }
+  }
+
+  function renderRanked(){
+    var rows = [];
+    for (var d=0; d<7; d++) for (var i=0; i<SLOT_COUNT; i++) rows.push({d:d, i:i, count: mockCounts[d+"-"+i] || 0});
+    rows.sort(function(a,b){ return b.count - a.count; });
+    var top = rows.slice(0, 20);
+    var tbody = document.getElementById("ranked-body");
+    tbody.innerHTML = "";
+    top.forEach(function(r, idx){
+      var utc = slotUTC(r.d, r.i);
+      var label = localLabel(utc, "America/Los_Angeles", true);
+      var pct = Math.round((r.count / MOCK_TOTAL_RESPONDENTS) * 100);
+      var tr = document.createElement("tr");
+      tr.innerHTML = '<td class="rank">' + (idx+1) + '</td><td>' + DAY_NAMES[r.d] + '</td><td>' + label + '</td><td class="people">' + r.count + '</td><td>' + pct + '%</td>';
+      tr.addEventListener("click", function(rr){
+        return function(){ showToast("Would open the exact-date picker, prefilled to the next " + DAY_NAMES[rr.d] + "."); };
+      }(r));
+      tbody.appendChild(tr);
+    });
+  }
+
+  var btnReset = document.getElementById("btn-reset");
+  btnReset.addEventListener("click", function(){
+    if (!state.resetArmed){
+      state.resetArmed = true;
+      btnReset.textContent = "Are you sure? Confirm reset";
+      btnReset.classList.add("danger");
+      setTimeout(function(){
+        if (state.resetArmed){
+          state.resetArmed = false;
+          btnReset.textContent = "Reset all picks";
+          btnReset.classList.remove("danger");
+        }
+      }, 4000);
+    } else {
+      mockCounts = {};
+      for (var d=0; d<7; d++) for (var i=0; i<SLOT_COUNT; i++) mockCounts[d+"-"+i] = 0;
+      state.resetArmed = false;
+      btnReset.textContent = "Reset all picks";
+      btnReset.classList.remove("danger");
+      renderRanked();
+      buildAdminGrid();
+      showToast("All picks reset.");
+    }
+  });
+
+  document.getElementById("btn-admin").addEventListener("click", function(){
+    buildAdminGrid();
+    renderRanked();
+    showStep("step-admin");
+  });
+  document.getElementById("btn-back-from-admin").addEventListener("click", function(){ showStep("step-email"); });
+
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+  function showToast(text){
+    toastEl.textContent = text;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 3200);
+  }
+
+  // ---------- init ----------
+  buildHeader(gridheadAdmin);
+  refreshZoneLabel();
+  buildDayChips();
+  renderDayPanels();
+  updateControls();
+  renderYourTimes();
+})();
+</script>
