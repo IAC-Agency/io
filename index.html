@@ -55,16 +55,19 @@
   /* masthead */
   .masthead{
     display:flex;
-    align-items:baseline;
+    flex-direction:column;
+    align-items:center;
     justify-content:center;
-    margin-bottom:10px;
+    gap:30px;
+    margin-bottom:16px;
   }
   .masthead h1{
     font-family:var(--font-display);
     font-weight:700;
     font-style:normal;
-    font-size:clamp(40px,10vw,58px);
+    font-size:clamp(48px,12vw,72px);
     letter-spacing:.06em;
+    word-spacing:.22em;
     text-transform:uppercase;
     margin:0;
     text-align:center;
@@ -78,24 +81,30 @@
     margin:14px auto 28px;
   }
 
-  .admin-link{
-    position:absolute;
-    top:36px;
-    right:20px;
-    font-family:var(--font-ui);
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:.04em;
-    color:var(--faint);
-    background:none;
-    border:none;
-    cursor:pointer;
-    text-decoration:underline;
-    text-underline-offset:3px;
-    z-index:2;
+  /* intro: full-screen title-card overlay */
+  .intro-overlay{
+    position:fixed;
+    inset:0;
+    background:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
   }
-  .admin-link:hover{ color:var(--moss); }
-  .admin-link:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+  .intro-stage{ width:680px; max-width:88vw; }
+  .intro-stage svg{ display:block; width:100%; height:auto; overflow:visible; }
+
+  /* small logo that lives in the header permanently */
+  .masthead-logo{ width:68px; }
+  .masthead-logo svg{ display:block; width:100%; height:auto; overflow:visible; }
+
+  .pt{ transform-box:fill-box; transform-origin:center; opacity:0; }
+  #introStage .pt-i{ --from-x:-70px; --from-y:-56px; }
+  #introStage .pt-a{ --from-x:0px;   --from-y:-96px; }
+  #introStage .pt-c{ --from-x:70px;  --from-y:-56px; }
+  #mastheadLogo .pt-i{ --from-x:-18px; --from-y:-14px; }
+  #mastheadLogo .pt-a{ --from-x:0px;   --from-y:-24px; }
+  #mastheadLogo .pt-c{ --from-x:18px;  --from-y:-14px; }
 
   .step{ display:none; }
   .step.active{ display:block; }
@@ -255,9 +264,20 @@
   .bucketchip:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
 
   /* entrance animation */
-  @keyframes titleReveal{
-    from{ opacity:0; letter-spacing:-.01em; transform:translateY(10px); }
-    to{ opacity:1; letter-spacing:.06em; transform:translateY(0); }
+  @keyframes assembleIn{
+    0%{ opacity:0; transform:translate(var(--from-x), var(--from-y)) scale(.96); animation-timing-function:cubic-bezier(.33,0,.18,1); }
+    58%{ opacity:1; transform:translate(0,0) scale(1); animation-timing-function:ease-in-out; }
+    74%{ opacity:1; transform:translate(calc(var(--from-x) * -0.05), calc(var(--from-y) * -0.05)) scale(1.02); animation-timing-function:ease-in-out; }
+    88%{ opacity:1; transform:translate(calc(var(--from-x) * 0.018), calc(var(--from-y) * 0.018)) scale(.99); animation-timing-function:ease-out; }
+    100%{ opacity:1; transform:translate(0,0) scale(1); }
+  }
+  @keyframes comeApart{
+    0%{ opacity:1; transform:translate(0,0) scale(1); }
+    100%{ opacity:0; transform:translate(var(--from-x), var(--from-y)) scale(.92); }
+  }
+  @keyframes titleRevealElegant{
+    from{ opacity:0; filter:blur(6px); letter-spacing:-.01em; transform:translateY(14px); }
+    to{ opacity:1; filter:blur(0); letter-spacing:.06em; transform:translateY(0); }
   }
   @keyframes ruleGrow{
     from{ transform:scaleX(0); opacity:0; }
@@ -267,22 +287,37 @@
     from{ opacity:0; transform:translateY(10px); }
     to{ opacity:1; transform:translateY(0); }
   }
-  .page > .admin-link{ animation:fadeRise .4s ease-out .2s both; }
-  .masthead h1{ animation:titleReveal .9s cubic-bezier(.19,1,.22,1) both; }
-  .masthead-rule{ transform-origin:center; animation:ruleGrow .5s ease-out .55s both; }
-  .step.active > *{ animation:fadeRise .55s cubic-bezier(.19,1,.22,1) both; }
-  .step.active > *:nth-child(1){ animation-delay:.75s; }
-  .step.active > *:nth-child(2){ animation-delay:.85s; }
-  .step.active > *:nth-child(3){ animation-delay:.95s; }
-  .step.active > *:nth-child(4){ animation-delay:1.05s; }
-  .step.active > *:nth-child(5){ animation-delay:1.15s; }
-  .step.active > *:nth-child(6){ animation-delay:1.25s; }
-  .step.active > *:nth-child(n+7){ animation-delay:1.3s; }
+  @keyframes fadeRiseBounce{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .pt.assemble-big{ animation:assembleIn 2.15s cubic-bezier(.22,1,.36,1) forwards; }
+  .pt.assemble-small{ animation:assembleIn 1s cubic-bezier(.22,1,.36,1) forwards; }
+  .pt.come-apart{ animation:comeApart .6s cubic-bezier(.4,0,.2,1) forwards; }
+
+  .masthead h1{ opacity:0; filter:blur(6px); transform:translateY(14px); }
+  .masthead h1.reveal{ animation:titleRevealElegant 1.1s cubic-bezier(.19,1,.22,1) forwards; }
+  .masthead-rule{ transform-origin:center; transform:scaleX(0); opacity:0; }
+  .masthead-rule.reveal{ animation:ruleGrow .5s ease-out forwards; }
+
+  .step.active > *{ opacity:0; transform:translateY(18px); }
+  .step.active.reveal > *{ animation:fadeRiseBounce .7s cubic-bezier(.34,1.56,.64,1) both; }
+  .step.active.reveal > *:nth-child(1){ animation-delay:0s; }
+  .step.active.reveal > *:nth-child(2){ animation-delay:.15s; }
+  .step.active.reveal > *:nth-child(3){ animation-delay:.3s; }
+  .step.active.reveal > *:nth-child(4){ animation-delay:.45s; }
+  .step.active.reveal > *:nth-child(5){ animation-delay:.6s; }
+  .step.active.reveal > *:nth-child(6){ animation-delay:.75s; }
+  .step.active.reveal > *:nth-child(n+7){ animation-delay:.85s; }
 
   @media (prefers-reduced-motion: reduce){
-    .page > .admin-link, .masthead h1, .masthead-rule, .step.active > *, .daypanel{
+    .intro-overlay{ display:none !important; }
+    .pt{ animation:none !important; opacity:1 !important; transform:none !important; }
+    .masthead h1, .masthead-rule, .step.active > *, .daypanel{
       animation:none !important;
       opacity:1 !important;
+      filter:none !important;
       transform:none !important;
       letter-spacing:.06em !important;
     }
@@ -584,16 +619,46 @@
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 
   @media (max-width:420px){
-    .admin-link{ position:static; display:block; text-align:right; margin-bottom:8px; }
     .form-card{ padding:20px; }
   }
 </style>
 
-<div class="page">
-  <button class="admin-link" id="btn-admin" type="button">Admin view</button>
+<div class="intro-overlay" id="introOverlay">
+  <div class="intro-stage" id="introStage">
+    <svg viewBox="0 0 294.8 172.36" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ig-grad0" x1="72.71" y1="9.62" x2="38.71" y2="127.62" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#009444"/><stop offset="1" stop-color="#006838"/>
+        </linearGradient>
+        <linearGradient id="ig-grad1" x1="145.67" y1="30.64" x2="111.67" y2="148.64" xlink:href="#ig-grad0"/>
+        <linearGradient id="ig-grad2" x1="212.36" y1="49.86" x2="178.36" y2="167.86" xlink:href="#ig-grad0"/>
+      </defs>
+      <path class="pt pt-i" fill="url(#ig-grad0)" stroke="#231f20" stroke-miterlimit="10" stroke-width=".5" d="M33.53,30.32h31.21v122.2h-31.21V30.32Z"/>
+      <path class="pt pt-a" fill="url(#ig-grad1)" stroke="#231f20" stroke-miterlimit="10" stroke-width=".5" d="M119.44,30.32h-24.61l-23.04,57.4v64.81h7.51l6.44-17.67h42.44l5.95,17.67h33.85L119.44,30.32ZM94.33,110.08l12.55-41.78h.5l12.55,41.78h-25.6Z"/>
+      <path class="pt pt-c" fill="url(#ig-grad2)" stroke="#231f20" stroke-miterlimit="10" stroke-width=".5" d="M200.21,127.42c-20.31,0-32.86-17.84-32.86-36.33,0-17.34,11.73-35.67,32.7-35.67,16.84,0,26.09,12.22,29.56,21.3h32.7c-3.3-19.16-23.78-48.72-62.09-48.72-29.4,0-50.22,17.34-59.17,38.93l32.72,82.36c7.97,3.53,16.98,5.54,26.78,5.54,29.56,0,54.66-19.16,61.76-48.06h-32.7c-1.98,4.29-9.91,20.64-29.4,20.64Z"/>
+    </svg>
+  </div>
+</div>
 
-  <div class="masthead"><h1>Open Studio</h1></div>
-  <div class="masthead-rule"></div>
+<div class="page">
+  <div class="masthead">
+    <div class="masthead-logo" id="mastheadLogo" aria-hidden="true">
+      <svg viewBox="0 0 294.8 172.36" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="mh-grad0" x1="72.71" y1="9.62" x2="38.71" y2="127.62" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#009444"/><stop offset="1" stop-color="#006838"/>
+          </linearGradient>
+          <linearGradient id="mh-grad1" x1="145.67" y1="30.64" x2="111.67" y2="148.64" xlink:href="#mh-grad0"/>
+          <linearGradient id="mh-grad2" x1="212.36" y1="49.86" x2="178.36" y2="167.86" xlink:href="#mh-grad0"/>
+        </defs>
+        <path class="pt pt-i" fill="url(#mh-grad0)" stroke="#231f20" stroke-miterlimit="10" stroke-width=".5" d="M33.53,30.32h31.21v122.2h-31.21V30.32Z"/>
+        <path class="pt pt-a" fill="url(#mh-grad1)" stroke="#231f20" stroke-miterlimit="10" stroke-width=".5" d="M119.44,30.32h-24.61l-23.04,57.4v64.81h7.51l6.44-17.67h42.44l5.95,17.67h33.85L119.44,30.32ZM94.33,110.08l12.55-41.78h.5l12.55,41.78h-25.6Z"/>
+        <path class="pt pt-c" fill="url(#mh-grad2)" stroke="#231f20" stroke-miterlimit="10" stroke-width=".5" d="M200.21,127.42c-20.31,0-32.86-17.84-32.86-36.33,0-17.34,11.73-35.67,32.7-35.67,16.84,0,26.09,12.22,29.56,21.3h32.7c-3.3-19.16-23.78-48.72-62.09-48.72-29.4,0-50.22,17.34-59.17,38.93l32.72,82.36c7.97,3.53,16.98,5.54,26.78,5.54,29.56,0,54.66-19.16,61.76-48.06h-32.7c-1.98,4.29-9.91,20.64-29.4,20.64Z"/>
+      </svg>
+    </div>
+    <h1 id="mastheadTitle">Open Studio</h1>
+  </div>
+  <div class="masthead-rule" id="mastheadRule"></div>
 
   <!-- STEP 1: email -->
   <section class="step active" id="step-email">
@@ -609,8 +674,7 @@
         <p class="field-msg" id="email-msg">Enter a valid email to continue.</p>
       </div>
       <div class="form-actions">
-        <button class="primary" id="btn-to-grid" type="button">Continue</button>
-        <button class="decline" id="btn-decline" type="button">I can't make it this time</button>
+        <button class="primary" id="btn-to-grid" type="button">Count Me In</button>
       </div>
     </div>
   </section>
@@ -797,10 +861,9 @@
   function showStep(id){
     steps.forEach(function(s){ document.getElementById(s).classList.toggle("active", s === id); });
     var activeEl = document.getElementById(id);
-    var children = activeEl.children;
-    for (var i=0; i<children.length; i++) children[i].style.animation = "none";
+    activeEl.classList.remove("reveal");
     void activeEl.offsetWidth; // force reflow so the animation restarts
-    for (var i=0; i<children.length; i++) children[i].style.animation = "";
+    activeEl.classList.add("reveal");
   }
 
   function buildHeader(headEl){
@@ -976,9 +1039,6 @@
     state.contact.email = email;
     showStep("step-grid");
   });
-  document.getElementById("btn-decline").addEventListener("click", function(){
-    showToast("Thanks for letting us know.");
-  });
   document.getElementById("btn-back-to-email").addEventListener("click", function(){ showStep("step-email"); });
 
   document.getElementById("btn-clear").addEventListener("click", clearAll);
@@ -1072,11 +1132,6 @@
     }
   });
 
-  document.getElementById("btn-admin").addEventListener("click", function(){
-    buildAdminGrid();
-    renderRanked();
-    showStep("step-admin");
-  });
   document.getElementById("btn-back-from-admin").addEventListener("click", function(){ showStep("step-email"); });
 
   var toastEl = document.getElementById("toast");
@@ -1088,6 +1143,51 @@
     toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 3200);
   }
 
+  // ---------- cinematic intro ----------
+  function runIntro(){
+    var overlay = document.getElementById("introOverlay");
+    var stagePieces = document.querySelectorAll("#introStage .pt");
+    var mastheadPieces = document.querySelectorAll("#mastheadLogo .pt");
+    var h1 = document.getElementById("mastheadTitle");
+    var rule = document.getElementById("mastheadRule");
+
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced){
+      overlay.style.display = "none";
+      h1.classList.add("reveal");
+      rule.classList.add("reveal");
+      showStep("step-email");
+      return;
+    }
+
+    var ASSEMBLE_BIG = 2150, HOLD_STATIC = 1500, COME_APART = 600, DARK_GAP = 200,
+        ASSEMBLE_SMALL = 1000, GAP1 = 300, TITLE_DUR = 1100, GAP2 = 500, RULE_DUR = 500, GAP3 = 1100;
+
+    requestAnimationFrame(function(){
+      stagePieces.forEach(function(p){ p.classList.add("assemble-big"); });
+    });
+
+    var tApart = ASSEMBLE_BIG + HOLD_STATIC;
+    setTimeout(function(){
+      stagePieces.forEach(function(p){ p.classList.add("come-apart"); });
+    }, tApart);
+
+    var tSmall = tApart + COME_APART + DARK_GAP;
+    setTimeout(function(){
+      overlay.style.display = "none";
+      mastheadPieces.forEach(function(p){ p.classList.add("assemble-small"); });
+    }, tSmall);
+
+    var tTitle = tSmall + ASSEMBLE_SMALL + GAP1;
+    setTimeout(function(){ h1.classList.add("reveal"); }, tTitle);
+
+    var tRule = tTitle + TITLE_DUR + GAP2;
+    setTimeout(function(){ rule.classList.add("reveal"); }, tRule);
+
+    var tForm = tRule + RULE_DUR + GAP3;
+    setTimeout(function(){ showStep("step-email"); }, tForm);
+  }
+
   // ---------- init ----------
   buildHeader(gridheadAdmin);
   refreshZoneLabel();
@@ -1095,5 +1195,6 @@
   renderDayPanels();
   updateControls();
   renderYourTimes();
+  runIntro();
 })();
 </script>
