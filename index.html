@@ -199,7 +199,8 @@
     justify-content:center;
     z-index:999;
   }
-  .intro-stage{ width:680px; max-width:88vw; }
+  .intro-stage{ width:680px; max-width:88vw; transition:opacity 1.4s ease; }
+  .intro-stage.fade-out{ opacity:0; }
   .intro-stage svg{ display:block; width:100%; height:auto; overflow:visible; }
 
   /* small logo that lives in the header permanently */
@@ -409,10 +410,6 @@
     35%{ opacity:1; }
     100%{ opacity:1; transform:translate(0,0) scale(1); }
   }
-  @keyframes comeApart{
-    0%{ opacity:1; transform:translate(0,0) scale(1); }
-    100%{ opacity:0; transform:translate(var(--from-x), var(--from-y)) scale(.92); }
-  }
   @keyframes titleRevealElegant{
     from{ opacity:0; filter:blur(6px); letter-spacing:-.01em; transform:translateY(14px); }
     to{ opacity:1; filter:blur(0); letter-spacing:.06em; transform:translateY(0); }
@@ -430,9 +427,8 @@
     to{ opacity:1; transform:translateY(0); }
   }
 
-  .pt.assemble-big{ animation:assembleIn 2.15s cubic-bezier(.3,1.2,.4,1) forwards; }
-  .pt.assemble-small{ animation:assembleIn 1s cubic-bezier(.3,1.2,.4,1) forwards; }
-  .pt.come-apart{ animation:comeApart .6s cubic-bezier(.4,0,.2,1) forwards; }
+  .pt.assemble-big{ animation:assembleIn 2.15s cubic-bezier(.3,1.3,.4,1) forwards; }
+  .pt.assemble-small{ animation:assembleIn 1s cubic-bezier(.3,1.3,.4,1) forwards; }
 
   .masthead h1{ opacity:0; filter:blur(6px); transform:translateY(14px); }
   .masthead h1.reveal{ animation:titleRevealElegant 1.1s cubic-bezier(.19,1,.22,1) forwards; }
@@ -893,8 +889,10 @@
       return;
     }
 
-    var ASSEMBLE_BIG = 2150, HOLD_STATIC = 1500, COME_APART = 600, DARK_GAP = 200,
+    var ASSEMBLE_BIG = 2150, HOLD_STATIC = 1500, FADE_OUT = 1400, DARK_GAP = 200,
         ASSEMBLE_SMALL = 1000, GAP1 = 300, TITLE_DUR = 1100, GAP2 = 500, RULE_DUR = 500, GAP3 = 1100;
+
+    var introStage = document.getElementById("introStage");
 
     requestAnimationFrame(function(){
       stagePieces.forEach(function(p){ p.classList.add("assemble-big"); });
@@ -902,10 +900,10 @@
 
     var tApart = ASSEMBLE_BIG + HOLD_STATIC;
     setTimeout(function(){
-      stagePieces.forEach(function(p){ p.classList.add("come-apart"); });
+      introStage.classList.add("fade-out");
     }, tApart);
 
-    var tSmall = tApart + COME_APART + DARK_GAP;
+    var tSmall = tApart + FADE_OUT + DARK_GAP;
     setTimeout(function(){
       overlay.style.display = "none";
       mastheadPieces.forEach(function(p){ p.classList.add("assemble-small"); });
