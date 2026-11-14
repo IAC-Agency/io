@@ -565,6 +565,7 @@
 
   <!-- STEP 1: email -->
   <section class="step active" id="step-email">
+    <p class="eyebrow">Virtual Session</p>
     <h2 class="question">Please let us know if you can attend:</h2>
     <div class="form-card">
       <div class="field">
@@ -763,7 +764,7 @@
       action: "TEMPLATE",
       text: "IAC Open Studio — " + opt.day,
       dates: icsStamp(new Date(opt.start)) + "/" + icsStamp(new Date(opt.end)),
-      details: "Open Studio session with IAC."
+      details: "Virtual Open Studio session with IAC."
     });
     return "https://calendar.google.com/calendar/render?" + params.toString();
   }
@@ -775,7 +776,7 @@
       "DTSTART:" + icsStamp(new Date(opt.start)),
       "DTEND:" + icsStamp(new Date(opt.end)),
       "SUMMARY:IAC Open Studio — " + opt.day,
-      "DESCRIPTION:Open Studio session with IAC.",
+      "DESCRIPTION:Virtual Open Studio session with IAC.",
       "END:VEVENT", "END:VCALENDAR"
     ].join("\r\n");
     var blob = new Blob([ics], {type: "text/calendar"});
