@@ -610,7 +610,6 @@
         <a class="ghost" id="btn-add-google" target="_blank" rel="noopener noreferrer">Add to Google Calendar</a>
         <button class="ghost" id="btn-add-ics" type="button">Add to Apple/Outlook</button>
       </div>
-      <button class="ghost" id="btn-restart" type="button">Start over</button>
     </div>
   </section>
 
@@ -864,13 +863,6 @@
       finishSubmit();
     });
   });
-  document.getElementById("btn-restart").addEventListener("click", function(){
-    inpName.value = ""; inpEmail.value = "";
-    state.selectedTime = null;
-    buildTimeOptions();
-    showStep("step-email");
-  });
-
   // ---------- cinematic intro ----------
   function runIntro(){
     var overlay = document.getElementById("introOverlay");
