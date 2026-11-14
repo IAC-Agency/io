@@ -83,6 +83,107 @@
     margin:14px auto 28px;
   }
 
+  .masthead-logo{ cursor:default; pointer-events:none; border-radius:10px; }
+  .masthead-logo.ready{ cursor:pointer; pointer-events:auto; }
+  .masthead-logo.ready:focus-visible{ outline:2px solid var(--focus); outline-offset:5px; }
+
+  .about-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(13,12,10,.86);
+    backdrop-filter:blur(3px);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:70px 20px;
+    overflow-y:auto;
+    z-index:1000;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .25s ease;
+  }
+  .about-overlay.show{ opacity:1; visibility:visible; }
+  .about-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    max-width:560px;
+    width:100%;
+    padding:40px 36px;
+    position:relative;
+    transform:translateY(12px);
+    transition:transform .25s ease;
+  }
+  .about-overlay.show .about-card{ transform:translateY(0); }
+  .about-close{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    border:1px solid var(--line-strong);
+    background:var(--surface-raised);
+    color:var(--muted);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .about-close:hover{ color:var(--paper); border-color:var(--moss); }
+  .about-title{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-weight:600;
+    font-size:28px;
+    margin:4px 0 16px;
+    color:var(--paper);
+  }
+  .about-body{
+    font-family:var(--font-ui);
+    font-size:14px;
+    line-height:1.6;
+    color:var(--muted);
+    margin:0 0 28px;
+  }
+  .about-team{ display:grid; gap:22px; border-top:1px solid var(--line); padding-top:24px; }
+  .about-role{
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--moss);
+    margin:0 0 4px;
+  }
+  .about-name{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:19px;
+    color:var(--paper);
+    margin:0 0 6px;
+  }
+  .about-bio{
+    font-family:var(--font-ui);
+    font-size:13px;
+    line-height:1.55;
+    color:var(--muted);
+    margin:0 0 10px;
+  }
+  .about-linkedin{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--gold);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+  }
+  .about-linkedin:hover{ border-bottom-color:var(--gold); }
+
+  @media (max-width:560px){
+    .about-overlay{ padding:30px 14px; }
+    .about-card{ padding:28px 22px; }
+  }
+
   /* intro: full-screen title-card overlay */
   .intro-overlay{
     position:fixed;
@@ -659,6 +760,29 @@
   </div>
   <div class="masthead-rule" id="mastheadRule"></div>
 
+  <div class="about-overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" aria-hidden="true">
+    <div class="about-card">
+      <button class="about-close" id="aboutClose" type="button" aria-label="Close">&times;</button>
+      <p class="eyebrow" style="text-align:left;">Strategic Creative Infrastructure</p>
+      <h2 id="aboutTitle" class="about-title">Ideas Art Code</h2>
+      <p class="about-body">IAC is a hybrid studio working two sides of the same discipline: enterprise creative infrastructure on one side, original IP development on the other. We build brand systems, campaign platforms, and employer-brand narratives for organizations across cold chain, AI, aerospace, and education &mdash; then apply those same systems-thinking instincts to building original entertainment IP from the ground up. Every engagement is built as a platform, not a deliverable: something your team can keep operating long after we&rsquo;re gone.</p>
+      <div class="about-team">
+        <div class="about-person">
+          <p class="about-role">Creative</p>
+          <h3 class="about-name">Jon-Michal Marr</h3>
+          <p class="about-bio">AI acceleration, brand platforms, and campaign creation &mdash; the creative infrastructure behind every IAC engagement, from cold-chain repositioning to animated IP world-building.</p>
+          <a class="about-linkedin" href="https://www.linkedin.com/in/jm101/" target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
+        </div>
+        <div class="about-person">
+          <p class="about-role">Strategy</p>
+          <h3 class="about-name">Tiffany Jones</h3>
+          <p class="about-bio">Communication strategy, program management, and leadership tactics &mdash; the strategic backbone connecting creative direction to organizational reality across complex, multi-stakeholder engagements.</p>
+          <a class="about-linkedin" href="https://www.linkedin.com/in/stjones/" target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- STEP 1: email -->
   <section class="step active" id="step-email">
     <h2 class="question">Please let us know if you can attend:</h2>
@@ -1227,6 +1351,7 @@
       overlay.style.display = "none";
       h1.classList.add("reveal");
       rule.classList.add("reveal");
+      markLogoReady();
       showStep("step-email");
       return;
     }
@@ -1249,6 +1374,8 @@
       mastheadPieces.forEach(function(p){ p.classList.add("assemble-small"); });
     }, tSmall);
 
+    setTimeout(markLogoReady, tSmall + ASSEMBLE_SMALL);
+
     var tTitle = tSmall + ASSEMBLE_SMALL + GAP1;
     setTimeout(function(){ h1.classList.add("reveal"); }, tTitle);
 
@@ -1258,6 +1385,49 @@
     var tForm = tRule + RULE_DUR + GAP3;
     setTimeout(function(){ showStep("step-email"); }, tForm);
   }
+
+  // ---------- about overlay ----------
+  var aboutOverlay = document.getElementById("aboutOverlay");
+  var aboutClose = document.getElementById("aboutClose");
+  var mastheadLogo = document.getElementById("mastheadLogo");
+  var lastFocused = null;
+
+  function markLogoReady(){
+    mastheadLogo.classList.add("ready");
+    mastheadLogo.setAttribute("role", "button");
+    mastheadLogo.setAttribute("tabindex", "0");
+    mastheadLogo.setAttribute("aria-label", "About IAC");
+    mastheadLogo.removeAttribute("aria-hidden");
+  }
+  function openAbout(){
+    lastFocused = document.activeElement;
+    aboutOverlay.classList.add("show");
+    aboutOverlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    aboutClose.focus();
+  }
+  function closeAbout(){
+    aboutOverlay.classList.remove("show");
+    aboutOverlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+  }
+  mastheadLogo.addEventListener("click", function(){
+    if (mastheadLogo.classList.contains("ready")) openAbout();
+  });
+  mastheadLogo.addEventListener("keydown", function(e){
+    if ((e.key === "Enter" || e.key === " ") && mastheadLogo.classList.contains("ready")){
+      e.preventDefault();
+      openAbout();
+    }
+  });
+  aboutClose.addEventListener("click", closeAbout);
+  aboutOverlay.addEventListener("click", function(e){
+    if (e.target === aboutOverlay) closeAbout();
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && aboutOverlay.classList.contains("show")) closeAbout();
+  });
 
   // ---------- init ----------
   buildHeader(gridheadAdmin);
