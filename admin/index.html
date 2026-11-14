@@ -310,8 +310,8 @@
   }
 
   function formatTimes(times){
-    if (!times || !times.length) return "(no times picked)";
-    return times.map(function(t){ return t.day + " · " + t.bucket + " (" + t.range + ")"; }).join(", ");
+    if (!times || !times.length) return "(no time picked)";
+    return times.map(function(t){ return t.label || t.option || "—"; }).join(", ");
   }
 
   function formatDate(iso){

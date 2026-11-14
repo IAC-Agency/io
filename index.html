@@ -461,95 +461,6 @@
     }
   }
 
-  /* grid */
-  .gridcard{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:12px;
-    overflow:hidden;
-  }
-  .gridscroll{ overflow-x:auto; }
-  .gridhead{
-    display:grid;
-    grid-template-columns:38px repeat(7, 1fr);
-    position:sticky;
-    top:0;
-    background:var(--surface);
-    z-index:3;
-    border-bottom:1px solid var(--line-strong);
-    min-width:380px;
-  }
-  .gridhead .corner{ border-right:1px solid var(--line); }
-  .gridhead .daylabel{
-    font-family:var(--font-ui);
-    font-weight:700;
-    font-size:13px;
-    text-align:center;
-    padding:9px 2px;
-    color:var(--faint);
-    border-right:1px solid var(--line);
-  }
-  .gridhead .daylabel.weekend{ background:var(--weekend); color:var(--muted); }
-  .gridhead .daylabel:last-child{ border-right:none; }
-
-  .gridbody{
-    display:grid;
-    grid-template-columns:38px repeat(7, 1fr);
-    min-width:380px;
-    position:relative;
-  }
-  .gutter-cell{
-    font-family:var(--font-mono);
-    font-size:9px;
-    color:var(--faint);
-    text-align:right;
-    padding-right:5px;
-    border-right:1px solid var(--line);
-    position:relative;
-    height:14px;
-  }
-  .gutter-cell span{ position:relative; top:-5px; }
-
-  .cell{
-    height:14px;
-    border-bottom:1px solid var(--line);
-    border-right:1px solid var(--line);
-    cursor:pointer;
-    touch-action:none;
-    position:relative;
-  }
-  .cell:last-child{ border-right:none; }
-  .cell.hour{ border-bottom:1px solid var(--line-strong); }
-  .cell:focus-visible{ outline:2px solid var(--focus); outline-offset:-2px; z-index:2; }
-  .cell.selected{ background:var(--gold-dim); box-shadow:inset 3px 0 0 var(--gold); }
-  .cell.weekend{ background:var(--weekend); }
-  .cell.weekend.selected{ background:var(--gold-dim); }
-
-  /* heatmap */
-  .heat-cell .fill{
-    position:absolute; inset:1px;
-    border-radius:2px;
-    background:var(--moss);
-  }
-  .heat-cell:hover .tip, .heat-cell:focus-visible .tip{ display:block; }
-  .tip{
-    display:none;
-    position:absolute;
-    bottom:calc(100% + 6px);
-    left:50%;
-    transform:translateX(-50%);
-    background:var(--ink);
-    border:1px solid var(--line-strong);
-    color:var(--paper);
-    font-family:var(--font-mono);
-    font-size:10px;
-    padding:4px 7px;
-    border-radius:5px;
-    white-space:nowrap;
-    z-index:5;
-    pointer-events:none;
-  }
-
   button.ghost, a.ghost{
     font-family:var(--font-ui);
     font-size:12px;
@@ -564,31 +475,6 @@
     display:inline-block;
   }
   button.ghost:hover, a.ghost:hover{ color:var(--paper); border-color:var(--moss); }
-  button.danger{
-    font-family:var(--font-ui);
-    font-size:12px;
-    font-weight:700;
-    color:var(--paper);
-    background:var(--danger);
-    border:1px solid var(--danger);
-    border-radius:8px;
-    padding:8px 12px;
-    cursor:pointer;
-  }
-  .back-link{
-    display:inline-block;
-    font-family:var(--font-ui);
-    font-size:11.5px;
-    font-weight:600;
-    color:var(--faint);
-    background:none;
-    border:none;
-    cursor:pointer;
-    margin-bottom:14px;
-    text-decoration:underline;
-    text-underline-offset:3px;
-  }
-  .back-link:hover{ color:var(--moss); }
 
   /* confirmation */
   .confirm{ text-align:center; padding:50px 20px; }
@@ -609,67 +495,6 @@
     margin:0 0 10px;
   }
   .confirm p{ color:var(--muted); font-size:13.5px; margin:0 0 22px; }
-
-  /* admin */
-  .ranked{ margin-top:18px; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
-  .ranked h3{
-    font-family:var(--font-ui);
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--faint);
-    margin:0;
-    padding:12px 16px;
-    border-bottom:1px solid var(--line);
-  }
-  table{ width:100%; border-collapse:collapse; }
-  thead th{
-    font-family:var(--font-ui);
-    font-size:9.5px;
-    font-weight:700;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--faint);
-    text-align:left;
-    padding:8px 16px;
-    border-bottom:1px solid var(--line);
-  }
-  tbody td{
-    font-family:var(--font-mono);
-    font-size:11.5px;
-    padding:8px 16px;
-    border-bottom:1px solid var(--line);
-    font-variant-numeric:tabular-nums;
-  }
-  tbody tr{ cursor:pointer; }
-  tbody tr:hover{ background:var(--ghost); }
-  tbody tr:last-child td{ border-bottom:none; }
-  td.rank{ color:var(--faint); width:30px; }
-  td.people{ color:var(--moss); font-weight:600; }
-  .admin-footer{ display:flex; align-items:center; gap:12px; margin-top:16px; }
-
-  .toast{
-    position:fixed;
-    bottom:24px;
-    left:50%;
-    transform:translateX(-50%) translateY(0);
-    background:var(--surface-raised);
-    border:1px solid var(--line-strong);
-    color:var(--paper);
-    font-family:var(--font-ui);
-    font-size:12.5px;
-    padding:11px 18px;
-    border-radius:10px;
-    box-shadow:0 12px 32px rgba(0,0,0,.4);
-    z-index:20;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .2s ease, transform .2s ease;
-    max-width:90vw;
-    text-align:center;
-  }
-  .toast.show{ opacity:1; transform:translateX(-50%) translateY(-6px); }
 
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 
@@ -792,30 +617,6 @@
     </div>
   </section>
 
-  <!-- ADMIN -->
-  <section class="step" id="step-admin">
-    <button class="back-link" id="btn-back-from-admin" type="button">&larr; Back to form</button>
-    <p class="eyebrow">Admin</p>
-    <h2 class="question">Availability heatmap</h2>
-    <div class="gridcard">
-      <div class="gridscroll">
-        <div class="gridhead" id="gridhead-admin"></div>
-        <div class="gridbody" id="gridbody-admin"></div>
-      </div>
-    </div>
-    <div class="ranked">
-      <h3>Top slots</h3>
-      <table>
-        <thead><tr><th>#</th><th>Day</th><th>Time (Pacific)</th><th>People</th><th>% of respondents</th></tr></thead>
-        <tbody id="ranked-body"></tbody>
-      </table>
-    </div>
-    <div class="admin-footer">
-      <button class="ghost" id="btn-reset" type="button">Reset all picks</button>
-    </div>
-  </section>
-
-  <div class="toast" id="toast"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -829,9 +630,6 @@
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
     : null;
 
-  var DAY_LETTERS = ["S","M","T","W","T","F","S"];
-  var DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-
   var BUTTON_LABELS = [
     "Count Me In", "Bing Bop Boop", "Grab a Seat", "See You There",
     "I'm In", "Save My Spot", "Lock It In", "Reserve My Time",
@@ -840,38 +638,6 @@
     "Book Me In", "I'm There", "Hold My Spot"
   ];
   var SUBMIT_LABELS = ["Commit", "I'm Down", "Let's Go"];
-  var SLOT_COUNT = 45;
-  var SLOT_MIN = 20;
-  var WINDOW_START_MIN = 5 * 60;
-
-  function referenceWeekStart(today){
-    var dow = today.getDay();
-    var add = dow === 0 ? 0 : (7 - dow);
-    return new Date(today.getFullYear(), today.getMonth(), today.getDate() + add);
-  }
-  var REF = referenceWeekStart(new Date());
-
-  function wallTimeToUTC(zone, y, m, d, hh, mm){
-    var guess = Date.UTC(y, m - 1, d, hh, mm);
-    for (var i = 0; i < 2; i++){
-      var parts = new Intl.DateTimeFormat("en-US", {
-        timeZone: zone, hourCycle: "h23",
-        year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit"
-      }).formatToParts(new Date(guess));
-      var o = {};
-      parts.forEach(function(p){ o[p.type] = p.value; });
-      var renderedAsUTC = Date.UTC(+o.year, +o.month - 1, +o.day, +o.hour, +o.minute);
-      guess += (Date.UTC(y, m - 1, d, hh, mm) - renderedAsUTC);
-    }
-    return new Date(guess);
-  }
-
-  function slotUTC(ptWeekday, slotIndex){
-    var dayDate = new Date(REF.getFullYear(), REF.getMonth(), REF.getDate() + ptWeekday);
-    var totalMin = WINDOW_START_MIN + slotIndex * SLOT_MIN;
-    var hh = Math.floor(totalMin / 60), mm = totalMin % 60;
-    return wallTimeToUTC("America/Los_Angeles", dayDate.getFullYear(), dayDate.getMonth() + 1, dayDate.getDate(), hh, mm);
-  }
 
   function localLabel(utcDate, zone, withMinutes){
     var fmt = new Intl.DateTimeFormat("en-US", {
@@ -922,53 +688,18 @@
 
   var state = {
     selectedTime: null, // one of TIME_OPTIONS[].id, "none", or null
-    resetArmed: false,
     tz: detectTZ(),
     contact: {name:"", email:""}
   };
 
-  var mockCounts = buildMockCounts();
-  var MOCK_TOTAL_RESPONDENTS = 34;
-
-  function buildMockCounts(){
-    var counts = {};
-    for (var d=0; d<7; d++){
-      for (var i=0; i<SLOT_COUNT; i++){
-        var minOfDay = WINDOW_START_MIN + i*SLOT_MIN;
-        var hour = minOfDay/60;
-        var isWeekend = (d===0 || d===6);
-        var base;
-        if (!isWeekend && hour >= 17 && hour <= 20.67) base = 10 + Math.round(Math.random()*14);
-        else if (isWeekend && hour >= 9 && hour <= 12) base = 8 + Math.round(Math.random()*12);
-        else base = Math.round(Math.random()*4);
-        counts[d+"-"+i] = Math.max(0, base);
-      }
-    }
-    return counts;
-  }
-
   // ---------- step navigation ----------
-  var steps = ["step-email","step-grid","step-done","step-admin"];
+  var steps = ["step-email","step-grid","step-done"];
   function showStep(id){
     steps.forEach(function(s){ document.getElementById(s).classList.toggle("active", s === id); });
     var activeEl = document.getElementById(id);
     activeEl.classList.remove("reveal");
     void activeEl.offsetWidth; // force reflow so the animation restarts
     activeEl.classList.add("reveal");
-  }
-
-  function buildHeader(headEl){
-    headEl.innerHTML = "";
-    var corner = document.createElement("div");
-    corner.className = "corner";
-    headEl.appendChild(corner);
-    for (var d=0; d<7; d++){
-      var cell = document.createElement("div");
-      cell.className = "daylabel" + ((d===0||d===6) ? " weekend" : "");
-      cell.textContent = DAY_LETTERS[d];
-      cell.setAttribute("aria-hidden","true");
-      headEl.appendChild(cell);
-    }
   }
 
   // ---------- time options ----------
@@ -1141,94 +872,6 @@
     showStep("step-email");
   });
 
-  // ---------- admin ----------
-  var gridheadAdmin = document.getElementById("gridhead-admin");
-  var gridbodyAdmin = document.getElementById("gridbody-admin");
-  gridbodyAdmin.className = "gridbody";
-
-  function buildAdminGrid(){
-    gridbodyAdmin.innerHTML = "";
-    for (var i=0; i<SLOT_COUNT; i++){
-      var row = document.createElement("div");
-      row.style.display = "contents";
-      var gutter = document.createElement("div");
-      gutter.className = "gutter-cell";
-      if (i % 3 === 0){
-        var utc = slotUTC(0, i);
-        gutter.innerHTML = "<span>" + localLabel(utc, "America/Los_Angeles", false) + "</span>";
-      }
-      row.appendChild(gutter);
-      for (var d=0; d<7; d++){
-        var c = document.createElement("div");
-        c.className = "cell heat-cell" + (i % 3 === 0 ? " hour" : "") + ((d===0||d===6) ? " weekend" : "");
-        var count = mockCounts[d+"-"+i] || 0;
-        var opacity = Math.min(1, count / 26);
-        c.innerHTML = count > 0 ? '<div class="fill" style="opacity:' + (opacity*0.85) + '"></div><div class="tip">' + count + ' picked</div>' : "";
-        c.addEventListener("click", function(dd, ii){
-          return function(){ showToast("Would open the exact-date picker, prefilled to the next " + DAY_NAMES[dd] + "."); };
-        }(d, i));
-        row.appendChild(c);
-      }
-      gridbodyAdmin.appendChild(row);
-    }
-  }
-
-  function renderRanked(){
-    var rows = [];
-    for (var d=0; d<7; d++) for (var i=0; i<SLOT_COUNT; i++) rows.push({d:d, i:i, count: mockCounts[d+"-"+i] || 0});
-    rows.sort(function(a,b){ return b.count - a.count; });
-    var top = rows.slice(0, 20);
-    var tbody = document.getElementById("ranked-body");
-    tbody.innerHTML = "";
-    top.forEach(function(r, idx){
-      var utc = slotUTC(r.d, r.i);
-      var label = localLabel(utc, "America/Los_Angeles", true);
-      var pct = Math.round((r.count / MOCK_TOTAL_RESPONDENTS) * 100);
-      var tr = document.createElement("tr");
-      tr.innerHTML = '<td class="rank">' + (idx+1) + '</td><td>' + DAY_NAMES[r.d] + '</td><td>' + label + '</td><td class="people">' + r.count + '</td><td>' + pct + '%</td>';
-      tr.addEventListener("click", function(rr){
-        return function(){ showToast("Would open the exact-date picker, prefilled to the next " + DAY_NAMES[rr.d] + "."); };
-      }(r));
-      tbody.appendChild(tr);
-    });
-  }
-
-  var btnReset = document.getElementById("btn-reset");
-  btnReset.addEventListener("click", function(){
-    if (!state.resetArmed){
-      state.resetArmed = true;
-      btnReset.textContent = "Are you sure? Confirm reset";
-      btnReset.classList.add("danger");
-      setTimeout(function(){
-        if (state.resetArmed){
-          state.resetArmed = false;
-          btnReset.textContent = "Reset all picks";
-          btnReset.classList.remove("danger");
-        }
-      }, 4000);
-    } else {
-      mockCounts = {};
-      for (var d=0; d<7; d++) for (var i=0; i<SLOT_COUNT; i++) mockCounts[d+"-"+i] = 0;
-      state.resetArmed = false;
-      btnReset.textContent = "Reset all picks";
-      btnReset.classList.remove("danger");
-      renderRanked();
-      buildAdminGrid();
-      showToast("All picks reset.");
-    }
-  });
-
-  document.getElementById("btn-back-from-admin").addEventListener("click", function(){ showStep("step-email"); });
-
-  var toastEl = document.getElementById("toast");
-  var toastTimer = null;
-  function showToast(text){
-    toastEl.textContent = text;
-    toastEl.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 3200);
-  }
-
   // ---------- cinematic intro ----------
   function runIntro(){
     var overlay = document.getElementById("introOverlay");
@@ -1321,7 +964,6 @@
   });
 
   // ---------- init ----------
-  buildHeader(gridheadAdmin);
   buildTimeOptions();
   runIntro();
 })();
