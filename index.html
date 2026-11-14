@@ -824,7 +824,7 @@
       btnAddGoogle.href = googleCalUrl(opt);
       btnAddIcs.onclick = function(){ downloadICS(opt); };
     } else if (state.selectedTime === "none"){
-      copy.textContent = "Thanks — we'll follow up at " + state.contact.email + " to set up a tour.";
+      copy.textContent = "Thank you, we'll follow up at " + state.contact.email + " to set up a tour.";
       calendarActions.classList.add("hide");
     } else {
       copy.textContent = "Thanks — we'll follow up at " + state.contact.email + " to find a time that works.";
