@@ -709,7 +709,7 @@
   TIMEZONES.forEach(function(t){
     var o = document.createElement("option");
     o.value = t.id;
-    o.textContent = t.label + " (" + t.abbr + ")";
+    o.textContent = t.label;
     tzSelect.appendChild(o);
   });
   tzSelect.value = state.tz;
