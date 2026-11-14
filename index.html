@@ -200,7 +200,10 @@
     align-items:center;
     justify-content:center;
     z-index:999;
+    opacity:1;
+    transition:opacity .45s ease;
   }
+  .intro-overlay.fade-out{ opacity:0; pointer-events:none; }
   .intro-stage{ width:680px; max-width:88vw; transition:opacity 1.4s ease; }
   .intro-stage.fade-out{ opacity:0; }
   .intro-stage svg{ display:block; width:100%; height:auto; overflow:visible; }
@@ -904,10 +907,12 @@
       introStage.classList.add("fade-out");
     }, tApart);
 
+    var OVERLAY_FADE = 450;
     var tSmall = tApart + FADE_OUT + DARK_GAP;
     setTimeout(function(){
-      overlay.style.display = "none";
+      overlay.classList.add("fade-out");
       mastheadPieces.forEach(function(p){ p.classList.add("assemble-small"); });
+      setTimeout(function(){ overlay.style.display = "none"; }, OVERLAY_FADE);
     }, tSmall);
 
     setTimeout(markLogoReady, tSmall + ASSEMBLE_SMALL);
