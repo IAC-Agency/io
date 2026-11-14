@@ -819,7 +819,7 @@
     var copy = document.getElementById("confirm-copy");
     var opt = TIME_OPTIONS.find(function(o){ return o.id === state.selectedTime; });
     if (opt){
-      copy.textContent = "You're down for " + opt.day + ", " + timeRangeLabel(opt, state.tz) + ". We'll follow up at " + state.contact.email + " to confirm.";
+      copy.textContent = "You're down for " + opt.day + ", " + timeRangeLabel(opt, state.tz) + ". We'll send a Zoom invite via " + state.contact.email + " to confirm.";
       calendarActions.classList.remove("hide");
       btnAddGoogle.href = googleCalUrl(opt);
       btnAddIcs.onclick = function(){ downloadICS(opt); };
