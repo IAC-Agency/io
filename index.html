@@ -596,6 +596,7 @@
       <div class="form-actions">
         <button class="primary" id="btn-continue" type="button">Submit</button>
       </div>
+      <p class="field-msg" id="select-error">Please choose an option above.</p>
       <p class="field-msg" id="submit-error">Something went wrong submitting your info. Please try again.</p>
     </div>
   </section>
@@ -732,6 +733,7 @@
     btn.innerHTML = '<span class="checkbox" aria-hidden="true"></span><span class="day">' + dayHtml + '</span><span class="part">' + escapeHtml(part) + '</span>';
     btn.addEventListener("click", function(){
       state.selectedTime = id;
+      document.getElementById("select-error").classList.remove("show");
       buildTimeOptions();
     });
     return btn;
@@ -839,6 +841,11 @@
       finishSubmit();
       return;
     }
+    if (!state.selectedTime){
+      document.getElementById("select-error").classList.add("show");
+      return;
+    }
+    document.getElementById("select-error").classList.remove("show");
     if (!sb){
       submitError.classList.add("show");
       return;
