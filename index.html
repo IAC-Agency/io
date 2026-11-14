@@ -769,6 +769,14 @@
 
   var DAY_LETTERS = ["S","M","T","W","T","F","S"];
   var DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+  var BUTTON_LABELS = [
+    "Count Me In", "Bing Bop Boop", "Grab a Seat", "See You There",
+    "I'm In", "Save My Spot", "Lock It In", "Reserve My Time",
+    "Yes, Let's Do This", "Claim My Slot", "Sign Me Up", "I'll Be There",
+    "Put Me Down", "Let's Go", "Mark Me Down", "On My Calendar",
+    "Book Me In", "I'm There", "Hold My Spot"
+  ];
   var SLOT_COUNT = 45;
   var SLOT_MIN = 20;
   var WINDOW_START_MIN = 5 * 60;
@@ -1051,7 +1059,10 @@
   var emailMsg = document.getElementById("email-msg");
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  document.getElementById("btn-to-grid").addEventListener("click", function(){
+  var btnToGrid = document.getElementById("btn-to-grid");
+  btnToGrid.textContent = BUTTON_LABELS[Math.floor(Math.random() * BUTTON_LABELS.length)];
+
+  btnToGrid.addEventListener("click", function(){
     var email = inpEmail.value.trim();
     if (!EMAIL_RE.test(email)){
       emailMsg.classList.add("show");
