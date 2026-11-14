@@ -183,6 +183,8 @@
   }
   .decline:hover{ color:var(--muted); }
 
+  .hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
   button.primary{
     font-family:var(--font-ui);
     font-size:13px;
@@ -265,10 +267,9 @@
 
   /* entrance animation */
   @keyframes assembleIn{
-    0%{ opacity:0; transform:translate(var(--from-x), var(--from-y)) scale(.96); animation-timing-function:cubic-bezier(.33,0,.18,1); }
-    58%{ opacity:1; transform:translate(0,0) scale(1); animation-timing-function:ease-in-out; }
-    74%{ opacity:1; transform:translate(calc(var(--from-x) * -0.05), calc(var(--from-y) * -0.05)) scale(1.02); animation-timing-function:ease-in-out; }
-    88%{ opacity:1; transform:translate(calc(var(--from-x) * 0.018), calc(var(--from-y) * 0.018)) scale(.99); animation-timing-function:ease-out; }
+    0%{ opacity:0; transform:translate(var(--from-x), var(--from-y)) scale(.94); animation-timing-function:cubic-bezier(.16,1,.3,1); }
+    62%{ opacity:1; transform:translate(0,0) scale(1); animation-timing-function:ease-in-out; }
+    80%{ opacity:1; transform:translate(calc(var(--from-x) * -0.035), calc(var(--from-y) * -0.035)) scale(1); animation-timing-function:ease-out; }
     100%{ opacity:1; transform:translate(0,0) scale(1); }
   }
   @keyframes comeApart{
@@ -673,6 +674,10 @@
         <input id="inp-email" type="email" placeholder="you@example.com" autocomplete="email">
         <p class="field-msg" id="email-msg">Enter a valid email to continue.</p>
       </div>
+      <div class="hp" aria-hidden="true">
+        <label for="hp-field">Company</label>
+        <input type="text" id="hp-field" name="company" tabindex="-1" autocomplete="off">
+      </div>
       <div class="form-actions">
         <button class="primary" id="btn-to-grid" type="button">Count Me In</button>
       </div>
@@ -709,6 +714,7 @@
       </div>
     </div>
     <p class="inline-msg" id="continue-msg">Pick at least one time to continue.</p>
+    <p class="field-msg" id="submit-error">Something went wrong submitting your times. Please try again.</p>
 
     <div class="yourtimes">
       <h3>Your times</h3>
@@ -752,9 +758,16 @@
   <div class="toast" id="toast"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 (function(){
   "use strict";
+
+  var SUPABASE_URL = "https://urvxgsdzwbppbvgsahvf.supabase.co";
+  var SUPABASE_KEY = "sb_publishable_Ft4LO2lgBgR3w7mgEEV8KQ_-FKe0HVb";
+  var sb = (window.supabase && window.supabase.createClient)
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+    : null;
 
   var DAY_LETTERS = ["S","M","T","W","T","F","S"];
   var DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -958,6 +971,19 @@
     renderYourTimes();
   }
 
+  function buildPreferredTimes(){
+    var out = [];
+    for (var d = 0; d < 7; d++){
+      for (var bi = 0; bi < BUCKETS.length; bi++){
+        if (state.selected.has(d + "-" + bi)){
+          var b = BUCKETS[bi];
+          out.push({ day: DAY_NAMES[d], bucket: b.name, range: bucketTimeOnly(b, state.zone), zone: state.zone });
+        }
+      }
+    }
+    return out;
+  }
+
   function updateControls(){
     var n = state.selected.size;
     document.querySelector("#selcount b").textContent = n;
@@ -1042,12 +1068,48 @@
   document.getElementById("btn-back-to-email").addEventListener("click", function(){ showStep("step-email"); });
 
   document.getElementById("btn-clear").addEventListener("click", clearAll);
-  document.getElementById("btn-continue").addEventListener("click", function(){
+
+  var btnContinue = document.getElementById("btn-continue");
+  var submitError = document.getElementById("submit-error");
+  var hpField = document.getElementById("hp-field");
+
+  function finishSubmit(){
     var copy = document.getElementById("confirm-copy");
     copy.textContent = state.contact.email
       ? "We'll follow up at " + state.contact.email + " to confirm a time."
       : "We'll follow up to confirm a time.";
     showStep("step-done");
+  }
+
+  btnContinue.addEventListener("click", function(){
+    if (hpField.value){
+      // honeypot tripped: pretend success, submit nothing
+      finishSubmit();
+      return;
+    }
+    if (!sb){
+      submitError.classList.add("show");
+      return;
+    }
+
+    submitError.classList.remove("show");
+    btnContinue.disabled = true;
+    var originalLabel = btnContinue.textContent;
+    btnContinue.textContent = "Submitting...";
+
+    sb.from("submissions").insert({
+      name: state.contact.name || "Guest",
+      email: state.contact.email,
+      preferred_times: buildPreferredTimes()
+    }).then(function(res){
+      btnContinue.disabled = false;
+      btnContinue.textContent = originalLabel;
+      if (res.error){
+        submitError.classList.add("show");
+        return;
+      }
+      finishSubmit();
+    });
   });
   document.getElementById("btn-restart").addEventListener("click", function(){
     inpName.value = ""; inpEmail.value = "";
