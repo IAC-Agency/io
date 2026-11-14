@@ -366,9 +366,8 @@
 
   /* entrance animation */
   @keyframes assembleIn{
-    0%{ opacity:0; transform:translate(var(--from-x), var(--from-y)) scale(.94); animation-timing-function:cubic-bezier(.16,1,.3,1); }
-    62%{ opacity:1; transform:translate(0,0) scale(1); animation-timing-function:ease-in-out; }
-    80%{ opacity:1; transform:translate(calc(var(--from-x) * -0.035), calc(var(--from-y) * -0.035)) scale(1); animation-timing-function:ease-out; }
+    0%{ opacity:0; transform:translate(var(--from-x), var(--from-y)) scale(.94); }
+    35%{ opacity:1; }
     100%{ opacity:1; transform:translate(0,0) scale(1); }
   }
   @keyframes comeApart{
@@ -392,8 +391,8 @@
     to{ opacity:1; transform:translateY(0); }
   }
 
-  .pt.assemble-big{ animation:assembleIn 2.15s cubic-bezier(.22,1,.36,1) forwards; }
-  .pt.assemble-small{ animation:assembleIn 1s cubic-bezier(.22,1,.36,1) forwards; }
+  .pt.assemble-big{ animation:assembleIn 2.15s cubic-bezier(.3,1.2,.4,1) forwards; }
+  .pt.assemble-small{ animation:assembleIn 1s cubic-bezier(.3,1.2,.4,1) forwards; }
   .pt.come-apart{ animation:comeApart .6s cubic-bezier(.4,0,.2,1) forwards; }
 
   .masthead h1{ opacity:0; filter:blur(6px); transform:translateY(14px); }
