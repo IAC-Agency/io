@@ -135,6 +135,7 @@
     font-style:italic;
     font-weight:600;
     font-size:28px;
+    line-height:1.3;
     margin:4px 0 16px;
     color:var(--paper);
   }
@@ -158,6 +159,7 @@
     font-family:var(--font-display);
     font-weight:700;
     font-size:19px;
+    line-height:1.3;
     color:var(--paper);
     margin:0 0 6px;
   }
@@ -305,9 +307,34 @@
   button.primary:disabled{ background:var(--surface-raised); color:var(--faint); border-color:var(--line); cursor:not-allowed; }
   button:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
 
+  /* time zone selector */
+  .tzrow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--faint);
+  }
+  .tzrow select{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--paper);
+    background:var(--surface-raised);
+    border:1px solid var(--line-strong);
+    border-radius:6px;
+    padding:6px 8px;
+    cursor:pointer;
+  }
+  .tzrow select:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+
   /* time options */
   .timeoptions{ display:flex; flex-direction:row; flex-wrap:wrap; gap:10px; }
   .timeoption{
+    position:relative;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -318,9 +345,31 @@
     background:var(--surface-raised);
     border:1px solid var(--line-strong);
     border-radius:10px;
-    padding:16px 8px;
+    padding:20px 10px 14px;
     min-height:92px;
     cursor:pointer;
+  }
+  .timeoption .checkbox{
+    position:absolute;
+    top:8px;
+    right:8px;
+    width:16px;
+    height:16px;
+    border-radius:4px;
+    border:1px solid var(--line-strong);
+    background:var(--surface);
+  }
+  .timeoption.on .checkbox{ background:var(--gold); border-color:var(--gold); }
+  .timeoption.on .checkbox::after{
+    content:"";
+    position:absolute;
+    left:5px;
+    top:2px;
+    width:4px;
+    height:8px;
+    border:solid var(--ink);
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg);
   }
   .timeoption .day{ font-family:var(--font-ui); font-weight:700; font-size:14px; color:var(--paper); line-height:1.3; }
   .timeoption .part{
@@ -331,7 +380,11 @@
     color:var(--moss);
     margin-top:6px;
   }
-  .timeoption.on{ background:var(--gold-dim); border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold); }
+  .timeoption.on{
+    background:var(--gold-dim);
+    border-color:var(--gold);
+    box-shadow:0 0 16px 2px var(--gold-fill), inset 0 0 0 1px var(--gold);
+  }
   .timeoption.on .day{ color:var(--gold); }
   .timeoption.on .part{ color:var(--gold); }
   .timeoption.none{
@@ -340,11 +393,11 @@
     align-items:flex-start;
     text-align:left;
     min-height:auto;
-    padding:14px 16px;
+    padding:14px 34px 14px 16px;
   }
   .timeoption.none .day{ color:var(--muted); font-weight:600; }
   .timeoption.none .part{ color:var(--faint); }
-  .timeoption:hover{ border-color:var(--moss); }
+  .timeoption:hover:not(.on){ border-color:var(--moss); }
   .timeoption:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
 
   /* entrance animation */
@@ -707,10 +760,13 @@
 
   <!-- STEP 2: grid -->
   <section class="step" id="step-grid">
-    <button class="back-link" id="btn-back-to-email" type="button">&larr; Back</button>
     <p class="eyebrow">Step 2 of 2</p>
     <h2 class="question">Which time works best for you?</h2>
     <div class="form-card">
+      <div class="tzrow">
+        <label for="tzSelect">Time zone</label>
+        <select id="tzSelect"></select>
+      </div>
       <div class="timeoptions" id="timeoptions" role="radiogroup" aria-label="Choose a time"></div>
       <div class="form-actions">
         <button class="primary" id="btn-continue" type="button">Submit</button>
@@ -777,9 +833,10 @@
     "Count Me In", "Bing Bop Boop", "Grab a Seat", "See You There",
     "I'm In", "Save My Spot", "Lock It In", "Reserve My Time",
     "Yes, Let's Do This", "Claim My Slot", "Sign Me Up", "I'll Be There",
-    "Put Me Down", "Let's Go", "Mark Me Down",
+    "Put Me Down", "Mark Me Down",
     "Book Me In", "I'm There", "Hold My Spot"
   ];
+  var SUBMIT_LABELS = ["Commit", "I'm Down", "Let's Go"];
   var SLOT_COUNT = 45;
   var SLOT_MIN = 20;
   var WINDOW_START_MIN = 5 * 60;
@@ -820,20 +877,50 @@
     return fmt.format(utcDate).replace(" ", "").toUpperCase().replace(/(\d)(AM|PM)/, "$1 $2");
   }
 
-  // the 3 proposed Open Studio times; start/end carry an explicit PT
+  // the 3 proposed Open Studio times; start/end carry an explicit PST
   // offset so Add-to-Calendar generates a correct, unambiguous event
   var TIME_OPTIONS = [
-    { id:"dec7",  day:"Monday, December 7",    short:"Mon\nDec 7",  part:"Afternoon",
-      start:"2026-12-07T13:00:00-08:00", end:"2026-12-07T14:30:00-08:00" },
-    { id:"dec9",  day:"Wednesday, December 9", short:"Wed\nDec 9",  part:"Early Morning",
-      start:"2026-12-09T07:00:00-08:00", end:"2026-12-09T08:00:00-08:00" },
-    { id:"dec11", day:"Friday, December 11",   short:"Fri\nDec 11", part:"Morning",
-      start:"2026-12-11T10:00:00-08:00", end:"2026-12-11T11:00:00-08:00" }
+    { id:"dec7",  day:"Monday, December 7",    short:"Mon\nDec 7",
+      start:"2026-12-07T13:00:00-08:00", end:"2026-12-07T13:20:00-08:00" },
+    { id:"dec9",  day:"Wednesday, December 9", short:"Wed\nDec 9",
+      start:"2026-12-09T07:00:00-08:00", end:"2026-12-09T07:20:00-08:00" },
+    { id:"dec11", day:"Friday, December 11",   short:"Fri\nDec 11",
+      start:"2026-12-11T09:00:00-08:00", end:"2026-12-11T09:20:00-08:00" }
   ];
+
+  var TIMEZONES = [
+    { id:"America/Los_Angeles", label:"Pacific",  abbr:"PT" },
+    { id:"America/Denver",      label:"Mountain", abbr:"MT" },
+    { id:"America/Chicago",     label:"Central",  abbr:"CT" },
+    { id:"America/New_York",   label:"Eastern",   abbr:"ET" }
+  ];
+
+  function detectTZ(){
+    try {
+      var z = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (TIMEZONES.some(function(t){ return t.id === z; })) return z;
+    } catch (e){}
+    return "America/Los_Angeles";
+  }
+
+  function tzAbbr(tzId){
+    var t = TIMEZONES.find(function(x){ return x.id === tzId; });
+    return t ? t.abbr : "";
+  }
+
+  function timeRangeLabel(opt, tzId){
+    var startLabel = localLabel(new Date(opt.start), tzId);
+    var endLabel = localLabel(new Date(opt.end), tzId);
+    if (startLabel.slice(-2) === endLabel.slice(-2)){
+      startLabel = startLabel.replace(/\s?(AM|PM)$/, "");
+    }
+    return startLabel + "–" + endLabel + " " + tzAbbr(tzId);
+  }
 
   var state = {
     selectedTime: null, // one of TIME_OPTIONS[].id, "none", or null
     resetArmed: false,
+    tz: detectTZ(),
     contact: {name:"", email:""}
   };
 
@@ -882,13 +969,26 @@
   }
 
   // ---------- time options ----------
+  var tzSelect = document.getElementById("tzSelect");
+  TIMEZONES.forEach(function(t){
+    var o = document.createElement("option");
+    o.value = t.id;
+    o.textContent = t.label + " (" + t.abbr + ")";
+    tzSelect.appendChild(o);
+  });
+  tzSelect.value = state.tz;
+  tzSelect.addEventListener("change", function(){
+    state.tz = tzSelect.value;
+    buildTimeOptions();
+  });
+
   function buildTimeOptions(){
     var wrap = document.getElementById("timeoptions");
     wrap.innerHTML = "";
     TIME_OPTIONS.forEach(function(opt){
-      wrap.appendChild(makeTimeOptionButton(opt.id, opt.short, opt.part));
+      wrap.appendChild(makeTimeOptionButton(opt.id, opt.short, timeRangeLabel(opt, state.tz)));
     });
-    wrap.appendChild(makeTimeOptionButton("none", "None of these work for me", "We'll reach out to find another time"));
+    wrap.appendChild(makeTimeOptionButton("none", "None of these work,", "but I'd still like a tour"));
   }
 
   function makeTimeOptionButton(id, day, part){
@@ -899,7 +999,7 @@
     btn.setAttribute("role", "radio");
     btn.setAttribute("aria-checked", isOn ? "true" : "false");
     var dayHtml = day.split("\n").map(function(line){ return escapeHtml(line); }).join("<br>");
-    btn.innerHTML = '<span class="day">' + dayHtml + '</span><span class="part">' + escapeHtml(part) + '</span>';
+    btn.innerHTML = '<span class="checkbox" aria-hidden="true"></span><span class="day">' + dayHtml + '</span><span class="part">' + escapeHtml(part) + '</span>';
     btn.addEventListener("click", function(){
       state.selectedTime = id;
       buildTimeOptions();
@@ -913,9 +1013,9 @@
 
   function buildPreferredTimes(){
     if (!state.selectedTime) return null;
-    if (state.selectedTime === "none") return [{ option: "none", label: "None of these work for me" }];
+    if (state.selectedTime === "none") return [{ option: "none", label: "None of these work, but I'd still like a tour" }];
     var opt = TIME_OPTIONS.find(function(o){ return o.id === state.selectedTime; });
-    return opt ? [{ option: opt.id, label: opt.day + " — " + opt.part }] : null;
+    return opt ? [{ option: opt.id, label: opt.day + " — " + timeRangeLabel(opt, state.tz) }] : null;
   }
 
   // ---------- add to calendar ----------
@@ -974,9 +1074,9 @@
     state.contact.email = email;
     showStep("step-grid");
   });
-  document.getElementById("btn-back-to-email").addEventListener("click", function(){ showStep("step-email"); });
 
   var btnContinue = document.getElementById("btn-continue");
+  btnContinue.textContent = SUBMIT_LABELS[Math.floor(Math.random() * SUBMIT_LABELS.length)];
   var submitError = document.getElementById("submit-error");
   var hpField = document.getElementById("hp-field");
   var calendarActions = document.getElementById("calendarActions");
@@ -987,10 +1087,13 @@
     var copy = document.getElementById("confirm-copy");
     var opt = TIME_OPTIONS.find(function(o){ return o.id === state.selectedTime; });
     if (opt){
-      copy.textContent = "You're down for " + opt.day + " (" + opt.part + "). We'll follow up at " + state.contact.email + " to confirm.";
+      copy.textContent = "You're down for " + opt.day + ", " + timeRangeLabel(opt, state.tz) + ". We'll follow up at " + state.contact.email + " to confirm.";
       calendarActions.classList.remove("hide");
       btnAddGoogle.href = googleCalUrl(opt);
       btnAddIcs.onclick = function(){ downloadICS(opt); };
+    } else if (state.selectedTime === "none"){
+      copy.textContent = "Thanks — we'll follow up at " + state.contact.email + " to set up a tour.";
+      calendarActions.classList.add("hide");
     } else {
       copy.textContent = "Thanks — we'll follow up at " + state.contact.email + " to find a time that works.";
       calendarActions.classList.add("hide");
