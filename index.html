@@ -543,20 +543,20 @@
   <div class="about-overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" aria-hidden="true">
     <div class="about-card">
       <button class="about-close" id="aboutClose" type="button" aria-label="Close">&times;</button>
-      <p class="eyebrow" style="text-align:left;">Strategic Creative Infrastructure</p>
+      <p class="eyebrow" style="text-align:left; padding-right:40px;">Branding, Creative &amp; Leadership Development</p>
       <h2 id="aboutTitle" class="about-title">Ideas Art Code</h2>
-      <p class="about-body">IAC is a hybrid studio working two sides of the same discipline: enterprise creative infrastructure on one side, original IP development on the other. We build brand systems, campaign platforms, and employer-brand narratives for organizations across cold chain, AI, aerospace, and education &mdash; then apply those same systems-thinking instincts to building original entertainment IP from the ground up. Every engagement is built as a platform, not a deliverable: something your team can keep operating long after we&rsquo;re gone.</p>
+      <p class="about-body">For twelve years, IAC has partnered with organizations to build their brand, create the work that brings it to life, and develop the leaders who carry it forward. We treat branding, creative production, and executive leadership development as a single discipline rather than three separate services. A core team of two is supported by a bench of dozens of specialized contractors &mdash; the focus of a boutique partner, with the range to match a much larger one.</p>
       <div class="about-team">
         <div class="about-person">
-          <p class="about-role">Creative</p>
+          <p class="about-role">Branding &amp; Creative</p>
           <h3 class="about-name">Jon-Michal Marr</h3>
-          <p class="about-bio">AI acceleration, brand platforms, and campaign creation &mdash; the creative infrastructure behind every IAC engagement, from cold-chain repositioning to animated IP world-building.</p>
+          <p class="about-bio">Jon-Michal leads IAC&rsquo;s brand and creative work, with a background spanning entertainment, consumer goods, healthcare, telecom, and travel for clients ranging from major studios to Fortune 500 brands.</p>
           <a class="about-linkedin" href="https://www.linkedin.com/in/jm101/" target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
         </div>
         <div class="about-person">
-          <p class="about-role">Strategy</p>
+          <p class="about-role">Leadership Development &amp; Strategy</p>
           <h3 class="about-name">Tiffany Jones</h3>
-          <p class="about-bio">Communication strategy, program management, and leadership tactics &mdash; the strategic backbone connecting creative direction to organizational reality across complex, multi-stakeholder engagements.</p>
+          <p class="about-bio">Tiffany leads IAC&rsquo;s leadership development and strategy practice. An ICF-certified executive coach trained in Marshall Goldsmith Stakeholder Centered Coaching, she works with leaders and teams across industries &mdash; from corporate to aviation &mdash; through 1:1 coaching, group programs, and keynote speaking.</p>
           <a class="about-linkedin" href="https://www.linkedin.com/in/stjones/" target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
         </div>
       </div>
@@ -745,11 +745,13 @@
     return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   }
 
+  // preferred_times is NOT NULL with a check constraint rejecting empty
+  // arrays, so every path here must return a non-empty array
   function buildPreferredTimes(){
-    if (!state.selectedTime) return null;
     if (state.selectedTime === "none") return [{ option: "none", label: "None of these work, but I'd still like a tour" }];
     var opt = TIME_OPTIONS.find(function(o){ return o.id === state.selectedTime; });
-    return opt ? [{ option: opt.id, label: opt.day + " — " + timeRangeLabel(opt, state.tz) }] : null;
+    if (opt) return [{ option: opt.id, label: opt.day + " — " + timeRangeLabel(opt, state.tz) }];
+    return [{ option: "no_selection", label: "Didn't pick a time" }];
   }
 
   // ---------- add to calendar ----------
@@ -795,6 +797,7 @@
 
   var btnToGrid = document.getElementById("btn-to-grid");
   btnToGrid.textContent = BUTTON_LABELS[Math.floor(Math.random() * BUTTON_LABELS.length)];
+  var hpField = document.getElementById("hp-field");
 
   btnToGrid.addEventListener("click", function(){
     var email = inpEmail.value.trim();
@@ -812,7 +815,6 @@
   var btnContinue = document.getElementById("btn-continue");
   btnContinue.textContent = SUBMIT_LABELS[Math.floor(Math.random() * SUBMIT_LABELS.length)];
   var submitError = document.getElementById("submit-error");
-  var hpField = document.getElementById("hp-field");
   var calendarActions = document.getElementById("calendarActions");
   var btnAddGoogle = document.getElementById("btn-add-google");
   var btnAddIcs = document.getElementById("btn-add-ics");
