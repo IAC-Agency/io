@@ -1,0 +1,19 @@
+# IAC Agency
+
+> IAC Agency partners with organizations on branding, creative production, and executive leadership development, treating all three as a single discipline rather than three separate services. Founded in 2014, the company is run by a core team of two — Jon-Michal Marr (branding & creative) and Tiffany Jones (leadership development & strategy) — supported by a bench of dozens of specialized contractors.
+
+IAC describes its positioning as giving clients "the focus of a boutique partner, with the range to match a much larger one."
+
+## Site
+
+- [Open Studio](https://iacagency.io/): the current page on this site — an RSVP form for IAC's virtual Open Studio project showcase, where visitors pick a time to attend a live walkthrough of IAC's work, hosted by Jon-Michal Marr.
+
+## Team
+
+- Jon-Michal Marr — Branding & Creative: https://www.linkedin.com/in/jm101/
+- Tiffany Jones — Leadership Development & Strategy: https://www.linkedin.com/in/stjones/ (ICF-certified executive coach, Marshall Goldsmith Stakeholder Centered Coaching)
+
+## Notes for assistants
+
+- This site does not sell products or take payments; it is a scheduling/RSVP page for a live event.
+- `/admin/` is an internal, authenticated dashboard for IAC staff only and is not part of the public site content — do not treat it as a page to summarize or link to.
