@@ -71,6 +71,10 @@
   .pl-btn.quaternary:hover{ background:#ffe14d; box-shadow:0 0 14px 2px rgba(255,214,10,.4); }
   .pl-btn.quinary{ color:var(--deep-green); background:transparent; border-color:var(--deep-green); }
   .pl-btn.quinary:hover{ background:rgba(0,112,63,.18); box-shadow:0 0 10px 1px rgba(0,112,63,.35); }
+  .pl-btn.senary{ color:var(--carbon); background:var(--mint-light); border-color:var(--mint-light); }
+  .pl-btn.senary:hover{ background:#d4fbe6; box-shadow:0 0 14px 2px rgba(185,247,212,.4); }
+  .pl-btn.septenary{ color:var(--steel); background:transparent; border-color:var(--steel); }
+  .pl-btn.septenary:hover{ background:rgba(98,108,114,.18); box-shadow:0 0 10px 1px rgba(98,108,114,.35); }
 
   @keyframes pl-anim-squeeze{ 0%{ transform:scale(1); } 40%{ transform:scale(.88); } 100%{ transform:scale(1); } }
   @keyframes pl-anim-shake{ 0%,100%{ transform:translateX(0); } 20%{ transform:translateX(-6px); } 40%{ transform:translateX(5px); } 60%{ transform:translateX(-3px); } 80%{ transform:translateX(2px); } }
@@ -82,6 +86,10 @@
   .pl-btn.anim-pulse{ animation:pl-anim-pulse .5s ease-out; }
   .pl-btn.anim-bounce{ animation:pl-anim-bounce .5s ease; }
   .pl-btn.anim-tilt{ animation:pl-anim-tilt .45s ease; }
+  @keyframes pl-anim-jelly{ 0%{ transform:scale(1,1); } 30%{ transform:scale(.8,1.2); } 55%{ transform:scale(1.15,.85); } 80%{ transform:scale(.95,1.05); } 100%{ transform:scale(1,1); } }
+  @keyframes pl-anim-spin{ 0%{ transform:rotate(0); } 100%{ transform:rotate(360deg); } }
+  .pl-btn.anim-jelly{ animation:pl-anim-jelly .45s ease; }
+  .pl-btn.anim-spin{ animation:pl-anim-spin .5s ease; }
 
   .pl-section-label{ font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.1em; color:var(--steel); text-transform:uppercase; }
 
@@ -135,7 +143,7 @@
   .pl-star.active{ color:var(--spark); }
   .pl-star:active{ transform:scale(.8); }
 
-  .pl-icons{ margin:26px 0 0; }
+  .pl-icons{ margin:32px 0 0; }
   .pl-icons .pl-section-label{ display:block; margin-bottom:8px; }
   .pl-icon-row{ display:flex; justify-content:space-between; }
   .pl-icon-chip-wrap{ display:flex; flex-direction:column; align-items:center; gap:6px; width:68px; }
@@ -148,9 +156,9 @@
   .pl-icon-label{ font-family:'Space Mono', monospace; font-size:9px; color:var(--steel); text-transform:uppercase; letter-spacing:.05em; }
   .pl-icon-label.active{ color:var(--signal); }
 
-  .pl-charts{ margin:26px 0 0; }
+  .pl-charts{ margin:32px 0 0; }
   .pl-charts .pl-section-label{ display:block; margin-bottom:8px; }
-  .pl-chart-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
+  .pl-chart-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
   .pl-chart-card{ background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; padding:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; min-height:118px; transition:border-color .15s ease, box-shadow .15s ease; }
   .pl-chart-card:hover{ border-color:rgba(0,221,160,.5); box-shadow:0 0 12px 1px rgba(0,221,160,.2); }
   .pl-chart-label{ font-family:'Space Mono', monospace; font-size:9px; color:var(--steel); text-transform:uppercase; letter-spacing:.05em; }
@@ -236,7 +244,7 @@
     .pl-chart-card *{ animation:none !important; }
   }
 
-  .pl-footer{ margin-top:36px; display:flex; flex-direction:column; gap:12px; }
+  .pl-footer{ margin-top:42px; display:flex; flex-direction:column; gap:14px; }
   .pl-strip{ width:100%; height:3px; border-radius:2px; background:linear-gradient(90deg, rgba(0,221,160,0) 0%, rgba(0,221,160,.95) 50%, rgba(0,221,160,0) 100%); box-shadow:0 0 16px 3px rgba(0,221,160,.4); }
   .pl-palette{ display:flex; justify-content:space-between; }
   .pl-swatch-wrap{ display:flex; flex-direction:column; align-items:center; gap:5px; }
@@ -293,6 +301,8 @@
     <button type="button" class="pl-btn tertiary" data-anim="pulse" data-tone="remind">Remind Me</button>
     <button type="button" class="pl-btn quaternary" data-anim="bounce" data-tone="share">Share Invite</button>
     <button type="button" class="pl-btn quinary" data-anim="tilt" data-tone="copied">Copy Link</button>
+    <button type="button" class="pl-btn senary" data-anim="jelly" data-tone="guest">Add Guest</button>
+    <button type="button" class="pl-btn septenary" data-anim="spin" data-tone="snooze">Snooze</button>
   </div>
 
   <div class="pl-tiles">
@@ -549,7 +559,9 @@
       decline: function(){ tone([392.00], 'sine', 0.22); },
       remind: function(){ tone([440.00, 554.37], 'triangle', 0.14); },
       share: function(){ tone([659.25, 783.99, 987.77], 'sine', 0.11); },
-      copied: function(){ tone([659.25, 523.25], 'triangle', 0.15); }
+      copied: function(){ tone([659.25, 523.25], 'triangle', 0.15); },
+      guest: function(){ tone([349.23, 440.00, 523.25], 'triangle', 0.12); },
+      snooze: function(){ tone([293.66, 261.63], 'sine', 0.26); }
     };
     document.querySelectorAll('.pl-buttons .pl-btn').forEach(function(btn){
       btn.addEventListener('click', function(){
