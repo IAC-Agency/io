@@ -32,10 +32,12 @@
   a:hover{ color:var(--signal); }
 
   .wrap{
-    max-width:720px;
+    max-width:1100px;
+    width:100%;
     margin:0 auto;
-    padding:48px 24px 80px;
+    padding:48px clamp(24px, 5vw, 64px) 80px;
     background:radial-gradient(ellipse 560px 420px at 50% -140px, rgba(0,155,88,.32) 0%, rgba(0,155,88,.12) 45%, transparent 72%), var(--carbon);
+    box-sizing:border-box;
   }
 
   .pl-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; }
