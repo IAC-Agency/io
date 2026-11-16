@@ -67,15 +67,19 @@
   .pl-btn.tertiary:hover{ background:rgba(0,221,160,.12); box-shadow:0 0 10px 1px rgba(0,221,160,.3); }
   .pl-btn.quaternary{ color:var(--carbon); background:var(--spark); border-color:var(--spark); }
   .pl-btn.quaternary:hover{ background:#ffe14d; box-shadow:0 0 14px 2px rgba(255,214,10,.4); }
+  .pl-btn.quinary{ color:var(--deep-green); background:transparent; border-color:var(--deep-green); }
+  .pl-btn.quinary:hover{ background:rgba(0,112,63,.18); box-shadow:0 0 10px 1px rgba(0,112,63,.35); }
 
   @keyframes pl-anim-squeeze{ 0%{ transform:scale(1); } 40%{ transform:scale(.88); } 100%{ transform:scale(1); } }
   @keyframes pl-anim-shake{ 0%,100%{ transform:translateX(0); } 20%{ transform:translateX(-6px); } 40%{ transform:translateX(5px); } 60%{ transform:translateX(-3px); } 80%{ transform:translateX(2px); } }
   @keyframes pl-anim-pulse{ 0%{ box-shadow:0 0 0 0 rgba(0,221,160,.5); } 100%{ box-shadow:0 0 0 16px rgba(0,221,160,0); } }
   @keyframes pl-anim-bounce{ 0%{ transform:translateY(0); } 30%{ transform:translateY(-9px); } 55%{ transform:translateY(0); } 75%{ transform:translateY(-3px); } 100%{ transform:translateY(0); } }
+  @keyframes pl-anim-tilt{ 0%{ transform:rotate(0); } 25%{ transform:rotate(-7deg); } 55%{ transform:rotate(5deg); } 80%{ transform:rotate(-2deg); } 100%{ transform:rotate(0); } }
   .pl-btn.anim-squeeze{ animation:pl-anim-squeeze .35s ease; }
   .pl-btn.anim-shake{ animation:pl-anim-shake .4s ease; }
   .pl-btn.anim-pulse{ animation:pl-anim-pulse .5s ease-out; }
   .pl-btn.anim-bounce{ animation:pl-anim-bounce .5s ease; }
+  .pl-btn.anim-tilt{ animation:pl-anim-tilt .45s ease; }
 
   .pl-section-label{ font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.1em; color:var(--steel); text-transform:uppercase; }
 
@@ -286,6 +290,7 @@
     <button type="button" class="pl-btn secondary" data-anim="shake" data-tone="decline">Maybe Later</button>
     <button type="button" class="pl-btn tertiary" data-anim="pulse" data-tone="remind">Remind Me</button>
     <button type="button" class="pl-btn quaternary" data-anim="bounce" data-tone="share">Share Invite</button>
+    <button type="button" class="pl-btn quinary" data-anim="tilt" data-tone="copied">Copy Link</button>
   </div>
 
   <div class="pl-tiles">
@@ -541,7 +546,8 @@
       confirm: function(){ tone([523.25, 659.25], 'sine', 0.16); },
       decline: function(){ tone([392.00], 'sine', 0.22); },
       remind: function(){ tone([440.00, 554.37], 'triangle', 0.14); },
-      share: function(){ tone([659.25, 783.99, 987.77], 'sine', 0.11); }
+      share: function(){ tone([659.25, 783.99, 987.77], 'sine', 0.11); },
+      copied: function(){ tone([659.25, 523.25], 'triangle', 0.15); }
     };
     document.querySelectorAll('.pl-buttons .pl-btn').forEach(function(btn){
       btn.addEventListener('click', function(){
