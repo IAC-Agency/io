@@ -159,7 +159,8 @@
   .pl-charts{ margin:32px 0 0; }
   .pl-charts .pl-section-label{ display:block; margin-bottom:8px; }
   .pl-chart-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
-  .pl-chart-card{ background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; padding:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; min-height:118px; transition:border-color .15s ease, box-shadow .15s ease; }
+  .pl-chart-card{ background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; padding:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:170px; transition:border-color .15s ease, box-shadow .15s ease; }
+  .pl-chart-visual{ flex:1 1 auto; min-height:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
   .pl-chart-card:hover{ border-color:rgba(0,221,160,.5); box-shadow:0 0 12px 1px rgba(0,221,160,.2); }
   .pl-chart-label{ font-family:'Space Mono', monospace; font-size:9px; color:var(--steel); text-transform:uppercase; letter-spacing:.05em; }
   .pl-bar-list{ display:flex; flex-direction:column; gap:6px; width:100%; }
@@ -235,8 +236,8 @@
   .pl-line-draw{ animation:pl-line-draw 9s ease-in-out infinite; }
   .pl-line-dot{ transform-box:fill-box; transform-origin:center; animation:pl-dot-pop 9s ease-in-out infinite; }
   .pl-area-fill{ animation:pl-area-in 9s ease-in-out infinite; }
-  .pl-donut-wrap{ position:relative; width:100%; aspect-ratio:280/190; }
-  .pl-donut-circle{ position:absolute; left:30%; top:31.05%; width:25.71%; aspect-ratio:1/1; }
+  .pl-donut-wrap{ position:relative; width:100%; max-height:100%; aspect-ratio:280/190; }
+  .pl-donut-circle{ position:absolute; left:37.14%; top:31.05%; width:25.71%; aspect-ratio:1/1; }
   .pl-donut-overlay{ position:absolute; inset:0; pointer-events:none; }
   .pl-donut-ring{
     position:absolute; inset:0; border-radius:50%;
@@ -435,7 +436,7 @@
     <label class="pl-section-label">Chart &amp; Graph Treatments</label>
     <div class="pl-chart-grid">
       <div class="pl-chart-card">
-        <svg viewBox="0 0 160 90" width="100%" height="80" aria-hidden="true">
+        <svg class="pl-chart-visual" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
           <line class="pl-axis-fade" x1="5" y1="80" x2="155" y2="80" stroke="#626C72" stroke-width="1" opacity="0.4"/>
           <rect class="pl-bar" x="10" y="50" width="18" height="30" rx="3" fill="#009B58"/>
           <rect class="pl-bar" x="38" y="30" width="18" height="50" rx="3" fill="#00DDA0"/>
@@ -446,7 +447,7 @@
         <span class="pl-chart-label pl-axis-fade">Bar Chart</span>
       </div>
       <div class="pl-chart-card">
-        <svg viewBox="0 0 160 90" width="100%" height="80" aria-hidden="true">
+        <svg class="pl-chart-visual" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
           <line class="pl-axis-fade" x1="5" y1="80" x2="155" y2="80" stroke="#626C72" stroke-width="1" opacity="0.4"/>
           <polyline class="pl-line-draw" points="10,60 35,45 60,55 85,25 110,35 135,15 150,20" fill="none" stroke="#00DDA0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="170" style="--len:170;"/>
           <circle class="pl-line-dot" cx="150" cy="20" r="3.5" fill="#00DDA0"/>
@@ -454,6 +455,7 @@
         <span class="pl-chart-label pl-axis-fade">Line Chart</span>
       </div>
       <div class="pl-chart-card">
+        <div class="pl-chart-visual">
         <div class="pl-donut-wrap">
           <div class="pl-donut-circle">
             <div class="pl-donut-ring"></div>
@@ -482,10 +484,11 @@
           </g>
           </svg>
         </div>
+        </div>
         <span class="pl-chart-label pl-axis-fade">Donut Chart</span>
       </div>
       <div class="pl-chart-card">
-        <svg viewBox="0 0 160 90" width="100%" height="80" aria-hidden="true">
+        <svg class="pl-chart-visual" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
           <defs>
             <linearGradient id="pl-area-fill" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#B9F7D4" stop-opacity="0.5"/>
@@ -499,7 +502,7 @@
         <span class="pl-chart-label pl-axis-fade">Area Chart</span>
       </div>
       <div class="pl-chart-card">
-        <svg viewBox="0 0 90 90" width="76" height="76" aria-hidden="true">
+        <svg class="pl-chart-visual" viewBox="0 0 90 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
           <circle cx="45" cy="45" r="36" fill="none" stroke="#10281F" stroke-width="8"/>
           <circle class="pl-ring-draw" cx="45" cy="45" r="36" fill="none" stroke="#00DDA0" stroke-width="8" stroke-linecap="round" stroke-dasharray="226.19" stroke-dashoffset="63.3" transform="rotate(-90 45 45)"/>
           <text class="pl-ring-pct pl-radial-pct" x="45" y="50" text-anchor="middle" font-family="Space Mono, monospace" font-size="16" fill="#E9E9DC">72%</text>
@@ -507,10 +510,12 @@
         <span class="pl-chart-label pl-axis-fade">Radial Progress</span>
       </div>
       <div class="pl-chart-card">
-        <div class="pl-bar-list">
-          <div class="pl-bar-row"><span class="bar-key">A</span><div class="bar-track"><div class="bar-fill" style="width:85%; background:#00DDA0;"></div></div></div>
-          <div class="pl-bar-row"><span class="bar-key">B</span><div class="bar-track"><div class="bar-fill" style="width:60%; background:#009B58;"></div></div></div>
-          <div class="pl-bar-row"><span class="bar-key">C</span><div class="bar-track"><div class="bar-fill" style="width:40%; background:#C78B56;"></div></div></div>
+        <div class="pl-chart-visual">
+          <div class="pl-bar-list">
+            <div class="pl-bar-row"><span class="bar-key">A</span><div class="bar-track"><div class="bar-fill" style="width:85%; background:#00DDA0;"></div></div></div>
+            <div class="pl-bar-row"><span class="bar-key">B</span><div class="bar-track"><div class="bar-fill" style="width:60%; background:#009B58;"></div></div></div>
+            <div class="pl-bar-row"><span class="bar-key">C</span><div class="bar-track"><div class="bar-fill" style="width:40%; background:#C78B56;"></div></div></div>
+          </div>
         </div>
         <span class="pl-chart-label pl-axis-fade">Ranked Bars</span>
       </div>
