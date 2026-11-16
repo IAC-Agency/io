@@ -160,7 +160,7 @@
   .pl-charts .pl-section-label{ display:block; margin-bottom:8px; }
   .pl-chart-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
   .pl-chart-card{ background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; padding:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:170px; transition:border-color .15s ease, box-shadow .15s ease; }
-  .pl-chart-visual{ flex:1 1 auto; min-height:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  .pl-chart-visual{ flex:1 1 auto; min-height:0; width:100%; display:flex; align-items:center; justify-content:center; }
   .pl-chart-card:hover{ border-color:rgba(0,221,160,.5); box-shadow:0 0 12px 1px rgba(0,221,160,.2); }
   .pl-chart-label{ font-family:'Space Mono', monospace; font-size:9px; color:var(--steel); text-transform:uppercase; letter-spacing:.05em; }
   .pl-bar-list{ display:flex; flex-direction:column; gap:6px; width:100%; }
@@ -236,7 +236,8 @@
   .pl-line-draw{ animation:pl-line-draw 9s ease-in-out infinite; }
   .pl-line-dot{ transform-box:fill-box; transform-origin:center; animation:pl-dot-pop 9s ease-in-out infinite; }
   .pl-area-fill{ animation:pl-area-in 9s ease-in-out infinite; }
-  .pl-donut-wrap{ position:relative; width:100%; max-height:100%; aspect-ratio:280/190; }
+  .pl-donut-wrap{ position:relative; width:100%; height:100%; }
+  .pl-donut-fit{ position:absolute; inset:0; margin:auto; aspect-ratio:280/190; }
   .pl-donut-circle{ position:absolute; left:37.14%; top:31.05%; width:25.71%; aspect-ratio:1/1; }
   .pl-donut-overlay{ position:absolute; inset:0; pointer-events:none; }
   .pl-donut-ring{
@@ -457,6 +458,7 @@
       <div class="pl-chart-card">
         <div class="pl-chart-visual">
         <div class="pl-donut-wrap">
+        <div class="pl-donut-fit">
           <div class="pl-donut-circle">
             <div class="pl-donut-ring"></div>
             <div style="position:absolute; inset:19.4%; border-radius:50%; background:#10281F;"></div>
@@ -483,6 +485,7 @@
             <text x="99.9" y="45.5" font-family="Space Mono, monospace" font-size="7.5" letter-spacing="0.03em" fill="#626C72" text-anchor="end">Great Friendships</text>
           </g>
           </svg>
+        </div>
         </div>
         </div>
         <span class="pl-chart-label pl-axis-fade">Donut Chart</span>
