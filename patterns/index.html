@@ -201,17 +201,16 @@
     88.88%{ opacity:1; }
     100%{ opacity:0; }
   }
-  @property --pl-donut-p{
-    syntax:'<number>';
-    inherits:true;
-    initial-value:0;
+  @keyframes pl-donut-build{
+    0%{ opacity:0; transform:rotate(-90deg) scale(.4); }
+    33.33%{ opacity:1; transform:rotate(-90deg) scale(1); }
+    88.88%{ opacity:1; transform:rotate(-90deg) scale(1); }
+    100%{ opacity:0; transform:rotate(-90deg) scale(1); }
   }
-  @keyframes pl-donut-sweep{
-    0%{ --pl-donut-p:0; opacity:1; }
-    33.33%{ --pl-donut-p:100; opacity:1; }
-    88.88%{ --pl-donut-p:100; opacity:1; }
-    100%{ --pl-donut-p:100; opacity:0; }
-  }
+  @keyframes pl-donut-cue-1{ 0%, 33.33%{ opacity:0; } 38%{ opacity:1; } 88.88%{ opacity:1; } 100%{ opacity:0; } }
+  @keyframes pl-donut-cue-2{ 0%, 37%{ opacity:0; } 42%{ opacity:1; } 88.88%{ opacity:1; } 100%{ opacity:0; } }
+  @keyframes pl-donut-cue-3{ 0%, 41%{ opacity:0; } 46%{ opacity:1; } 88.88%{ opacity:1; } 100%{ opacity:0; } }
+  @keyframes pl-donut-cue-4{ 0%, 45%{ opacity:0; } 50%{ opacity:1; } 88.88%{ opacity:1; } 100%{ opacity:0; } }
   @keyframes pl-ring-draw{
     0%{ stroke-dashoffset:226.19; opacity:1; }
     33.33%{ stroke-dashoffset:63.3; opacity:1; }
@@ -231,13 +230,11 @@
   .pl-line-draw{ animation:pl-line-draw 9s ease-in-out infinite; }
   .pl-line-dot{ transform-box:fill-box; transform-origin:center; animation:pl-dot-pop 9s ease-in-out infinite; }
   .pl-area-fill{ animation:pl-area-in 9s ease-in-out infinite; }
-  .pl-donut-ring{
-    position:absolute; inset:0; border-radius:50%;
-    background:conic-gradient(#009B58 0% 45%, #00DDA0 45% 75%, #C78B56 75% 90%, #626C72 90% 100%);
-    -webkit-mask-image:conic-gradient(#000 calc(var(--pl-donut-p) * 1%), transparent calc(var(--pl-donut-p) * 1%));
-    mask-image:conic-gradient(#000 calc(var(--pl-donut-p) * 1%), transparent calc(var(--pl-donut-p) * 1%));
-    animation:pl-donut-sweep 9s ease-in-out infinite;
-  }
+  .pl-donut-ring-build{ transform-origin:220px 150px; animation:pl-donut-build 9s ease-in-out infinite; }
+  .pl-donut-cue-1{ animation:pl-donut-cue-1 9s ease-in-out infinite; }
+  .pl-donut-cue-2{ animation:pl-donut-cue-2 9s ease-in-out infinite; }
+  .pl-donut-cue-3{ animation:pl-donut-cue-3 9s ease-in-out infinite; }
+  .pl-donut-cue-4{ animation:pl-donut-cue-4 9s ease-in-out infinite; }
   .pl-ring-draw{ animation:pl-ring-draw 9s ease-in-out infinite; }
   .pl-ring-pct, .pl-axis-fade{ animation:pl-fade-hold 9s ease-in-out infinite; }
   @media (prefers-reduced-motion: reduce){
@@ -443,13 +440,6 @@
         <span class="pl-chart-label pl-axis-fade">Line Chart</span>
       </div>
       <div class="pl-chart-card">
-        <div style="position:relative; width:72px; height:72px;">
-          <div class="pl-donut-ring"></div>
-          <div style="position:absolute; inset:14px; border-radius:50%; background:#10281F;"></div>
-        </div>
-        <span class="pl-chart-label pl-axis-fade">Donut Chart</span>
-      </div>
-      <div class="pl-chart-card">
         <svg viewBox="0 0 160 90" width="100%" height="80" aria-hidden="true">
           <defs>
             <linearGradient id="pl-area-fill" x1="0" y1="0" x2="0" y2="1">
@@ -478,6 +468,37 @@
           <div class="pl-bar-row"><span class="bar-key">C</span><div class="bar-track"><div class="bar-fill" style="width:40%; background:#C78B56;"></div></div></div>
         </div>
         <span class="pl-chart-label pl-axis-fade">Ranked Bars</span>
+      </div>
+      <div class="pl-chart-card" style="grid-column:1 / -1;">
+        <svg viewBox="0 0 460 300" width="100%" height="220" aria-hidden="true">
+          <g class="pl-donut-ring-build">
+            <circle cx="220" cy="150" r="70" fill="none" stroke="#009B58" stroke-width="26" stroke-dasharray="197.92 241.90" stroke-dashoffset="0"/>
+            <circle cx="220" cy="150" r="70" fill="none" stroke="#00DDA0" stroke-width="26" stroke-dasharray="131.95 307.87" stroke-dashoffset="-197.92"/>
+            <circle cx="220" cy="150" r="70" fill="none" stroke="#C78B56" stroke-width="26" stroke-dasharray="65.97 373.85" stroke-dashoffset="-329.87"/>
+            <circle cx="220" cy="150" r="70" fill="none" stroke="#626C72" stroke-width="26" stroke-dasharray="43.98 395.84" stroke-dashoffset="-395.84"/>
+          </g>
+          <g class="pl-donut-cue-1">
+            <circle cx="304.9" cy="136.5" r="3" fill="#009B58"/>
+            <line x1="304.9" y1="136.5" x2="348.4" y2="129.7" stroke="#009B58" stroke-width="1"/>
+            <text x="354.4" y="133.2" font-family="Space Mono, monospace" font-size="9" letter-spacing="0.05em" fill="#009B58">Cool People</text>
+          </g>
+          <g class="pl-donut-cue-2">
+            <circle cx="169.4" cy="219.6" r="3" fill="#00DDA0"/>
+            <line x1="169.4" y1="219.6" x2="143.6" y2="255.2" stroke="#00DDA0" stroke-width="1"/>
+            <text x="137.6" y="258.2" font-family="Space Mono, monospace" font-size="9" letter-spacing="0.05em" fill="#00DDA0" text-anchor="end">Good Food</text>
+          </g>
+          <g class="pl-donut-cue-3">
+            <circle cx="143.4" cy="111.0" r="3" fill="#C78B56"/>
+            <line x1="143.4" y1="111.0" x2="104.2" y2="91.0" stroke="#C78B56" stroke-width="1"/>
+            <text x="98.2" y="94.0" font-family="Space Mono, monospace" font-size="9" letter-spacing="0.05em" fill="#C78B56" text-anchor="end">Fun Adventures</text>
+          </g>
+          <g class="pl-donut-cue-4">
+            <circle cx="193.4" cy="68.2" r="3" fill="#626C72"/>
+            <line x1="193.4" y1="68.2" x2="179.8" y2="26.4" stroke="#626C72" stroke-width="1"/>
+            <text x="173.8" y="29.4" font-family="Space Mono, monospace" font-size="9" letter-spacing="0.05em" fill="#626C72" text-anchor="end">Great Friendships</text>
+          </g>
+        </svg>
+        <span class="pl-chart-label pl-axis-fade">Donut Chart</span>
       </div>
     </div>
   </div>
