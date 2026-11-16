@@ -77,7 +77,7 @@
   .ts-tile--on .day, .ts-tile--on .time{ color:var(--signal); }
   .ts-tile .time{ font-family:'Space Mono', monospace; font-size:11px; color:var(--steel); margin-top:4px; }
 
-  .pl-controls{ margin:20px 0 0; display:flex; gap:20px; align-items:center; flex-wrap:wrap; padding:14px; background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; }
+  .pl-controls{ margin:20px 0 0; display:flex; gap:20px; align-items:center; flex-wrap:wrap; padding:22px 14px; background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; }
   .pl-controls label{ display:flex; align-items:center; gap:9px; font-family:'Archivo', sans-serif; font-size:13px; color:var(--warm-white); cursor:pointer; }
   .pl-checkbox{ appearance:none; width:18px; height:18px; border-radius:50%; border:2px solid var(--signal); background:var(--signal); cursor:pointer; flex-shrink:0; background-image:url('data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M4 12.5l5 5L20 6%22 fill=%22none%22 stroke=%22%23080B09%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E'); background-size:13px 13px; background-position:center; background-repeat:no-repeat; }
   .pl-checkbox.off{ background:transparent; border-color:rgba(98,108,114,.7); background-image:none; }
@@ -85,8 +85,8 @@
   .pl-toggle.off{ background:var(--forest); border-color:rgba(98,108,114,.6); background-image:radial-gradient(circle 7px at 8px 8px, var(--steel) 99%, transparent 100%); }
   .pl-toggle:disabled{ cursor:not-allowed; }
   .pl-stepper{ display:flex; align-items:center; gap:10px; font-family:'Archivo', sans-serif; font-size:13px; color:var(--warm-white); }
-  .pl-stepper-control{ display:flex; align-items:center; border:1px solid rgba(98,108,114,.5); border-radius:999px; overflow:hidden; }
-  .pl-stepper-control button{ width:26px; height:26px; border:none; background:transparent; color:var(--mint-light); font-family:'Space Mono', monospace; font-size:14px; cursor:pointer; line-height:1; }
+  .pl-stepper-control{ display:flex; align-items:center; border:1px solid var(--iac-green); border-radius:999px; overflow:hidden; }
+  .pl-stepper-control button{ width:26px; height:26px; border:none; background:transparent; color:var(--iac-green); font-family:'Space Mono', monospace; font-size:14px; cursor:pointer; line-height:1; }
   .pl-stepper-control span{ width:22px; text-align:center; font-family:'Space Mono', monospace; font-size:12px; color:var(--warm-white); }
   .pl-disabled{ color:var(--steel); cursor:not-allowed; opacity:.5; }
 
@@ -141,11 +141,11 @@
   </div>
 
   <div>
-    <h1 class="pl-headline">Open Studio</h1>
+    <h1 class="pl-headline">Headline Font</h1>
     <div class="pl-rule"></div>
   </div>
 
-  <div class="pl-eyebrow">Virtual Project Showcase</div>
+  <div class="pl-eyebrow">Subhead</div>
 
   <p class="pl-body">IAC partners with organizations on branding, creative production, and executive leadership development, treating all three as a single discipline.</p>
 
@@ -183,7 +183,7 @@
   <div class="pl-controls">
     <label><input type="checkbox" class="pl-checkbox" checked>Email reminder</label>
     <label><input type="checkbox" class="pl-toggle" checked>Add to calendar</label>
-    <label><input type="radio" name="pl-text-reminder" class="pl-checkbox off">Text reminder</label>
+    <label><input type="radio" name="pl-text-reminder" class="pl-checkbox off" style="border-color:var(--copper);">Text reminder</label>
     <div class="pl-stepper">
       Guests
       <div class="pl-stepper-control">
