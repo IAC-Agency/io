@@ -77,22 +77,23 @@
   .ts-tile--on .day, .ts-tile--on .time{ color:var(--signal); }
   .ts-tile .time{ font-family:'Space Mono', monospace; font-size:11px; color:var(--steel); margin-top:4px; }
 
-  .pl-controls{ margin:20px 0 0; display:flex; gap:20px; align-items:center; flex-wrap:wrap; padding:22px 14px; background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; }
+  .pl-controls{ margin:20px 0 0; display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; padding:22px 14px; background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; }
   .pl-controls label{ display:flex; align-items:center; gap:9px; font-family:'Archivo', sans-serif; font-size:13px; color:var(--warm-white); cursor:pointer; }
-  .pl-checkbox{ appearance:none; width:18px; height:18px; border-radius:50%; border:2px solid var(--signal); background:var(--signal); cursor:pointer; flex-shrink:0; background-image:url('data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M4 12.5l5 5L20 6%22 fill=%22none%22 stroke=%22%23080B09%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E'); background-size:13px 13px; background-position:center; background-repeat:no-repeat; }
-  .pl-checkbox.off{ background:transparent; border-color:rgba(98,108,114,.7); background-image:none; }
-  .pl-toggle{ appearance:none; width:34px; height:18px; border-radius:999px; border:1px solid var(--spark); background:var(--spark); cursor:pointer; flex-shrink:0; background-image:radial-gradient(circle 7px at 26px 8px, #080B09 99%, transparent 100%); }
-  .pl-toggle.off{ background:var(--forest); border-color:rgba(98,108,114,.6); background-image:radial-gradient(circle 7px at 8px 8px, var(--steel) 99%, transparent 100%); }
-  .pl-toggle:disabled{ cursor:not-allowed; }
+  .pl-checkbox{ --accent: var(--signal); appearance:none; width:18px; height:18px; border-radius:50%; border:2px solid var(--accent); background:transparent; cursor:pointer; flex-shrink:0; transition:background .15s ease, border-color .15s ease; }
+  .pl-checkbox:checked{ background:var(--accent); background-image:url('data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M4 12.5l5 5L20 6%22 fill=%22none%22 stroke=%22%23080B09%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E'); background-size:13px 13px; background-position:center; background-repeat:no-repeat; }
+  .pl-toggle{ appearance:none; width:34px; height:18px; border-radius:999px; border:1px solid rgba(98,108,114,.6); background:var(--forest); cursor:pointer; flex-shrink:0; background-image:radial-gradient(circle 7px at 8px 8px, var(--steel) 99%, transparent 100%); transition:background .15s ease, border-color .15s ease; }
+  .pl-toggle:checked{ border-color:var(--spark); background:var(--spark); background-image:radial-gradient(circle 7px at 26px 8px, #080B09 99%, transparent 100%); }
+  .pl-toggle:disabled{ cursor:not-allowed; opacity:.5; }
   .pl-stepper{ display:flex; align-items:center; gap:10px; font-family:'Archivo', sans-serif; font-size:13px; color:var(--warm-white); }
   .pl-stepper-control{ display:flex; align-items:center; border:1px solid var(--iac-green); border-radius:999px; overflow:hidden; }
   .pl-stepper-control button{ width:26px; height:26px; border:none; background:transparent; color:var(--iac-green); font-family:'Space Mono', monospace; font-size:14px; cursor:pointer; line-height:1; }
+  .pl-stepper-control button:hover{ background:rgba(0,155,88,.18); }
   .pl-stepper-control span{ width:22px; text-align:center; font-family:'Space Mono', monospace; font-size:12px; color:var(--warm-white); }
   .pl-disabled{ color:var(--steel); cursor:not-allowed; opacity:.5; }
 
   .pl-icons{ margin:26px 0 0; }
   .pl-icons .pl-section-label{ display:block; margin-bottom:8px; }
-  .pl-icon-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .pl-icon-row{ display:flex; justify-content:space-between; }
   .pl-icon-chip-wrap{ display:flex; flex-direction:column; align-items:center; gap:6px; width:68px; }
   .pl-icon-chip{ width:46px; height:46px; border-radius:50%; background:var(--forest); border:1px solid rgba(98,108,114,.5); display:flex; align-items:center; justify-content:center; transition:border-color .15s ease, box-shadow .15s ease, background .15s ease; }
   .pl-icon-chip:hover{ border-color:rgba(0,221,160,.7); box-shadow:0 0 12px 2px rgba(0,221,160,.3); }
@@ -105,7 +106,7 @@
   .pl-footer{ margin-top:36px; display:flex; flex-direction:column; gap:12px; }
   .pl-strip{ width:100%; height:3px; border-radius:2px; background:linear-gradient(90deg, rgba(0,221,160,0) 0%, rgba(0,221,160,.95) 50%, rgba(0,221,160,0) 100%); box-shadow:0 0 16px 3px rgba(0,221,160,.4); }
   .pl-hr{ width:100%; height:1px; background:rgba(98,108,114,.3); margin-top:4px; }
-  .pl-palette{ display:flex; gap:12px; flex-wrap:wrap; }
+  .pl-palette{ display:flex; justify-content:space-between; }
   .pl-swatch-wrap{ display:flex; flex-direction:column; align-items:center; gap:5px; }
   .pl-swatch{ width:24px; height:24px; border-radius:50%; }
   .pl-swatch-label{ font-family:'Space Mono', monospace; font-size:8px; color:var(--steel); }
@@ -183,16 +184,16 @@
   <div class="pl-controls">
     <label><input type="checkbox" class="pl-checkbox" checked>Email reminder</label>
     <label><input type="checkbox" class="pl-toggle" checked>Add to calendar</label>
-    <label><input type="radio" name="pl-text-reminder" class="pl-checkbox off" style="border-color:var(--copper);">Text reminder</label>
+    <label><input type="radio" name="pl-text-reminder" class="pl-checkbox" style="--accent:var(--copper);">Text reminder</label>
     <div class="pl-stepper">
       Guests
       <div class="pl-stepper-control">
-        <button type="button" aria-label="Decrease guests">&minus;</button>
+        <button type="button" aria-label="Decrease guests" data-step="-1">&minus;</button>
         <span>1</span>
-        <button type="button" aria-label="Increase guests">+</button>
+        <button type="button" aria-label="Increase guests" data-step="1">+</button>
       </div>
     </div>
-    <label class="pl-disabled"><input type="checkbox" class="pl-toggle off" disabled>VIP access</label>
+    <label class="pl-disabled"><input type="checkbox" class="pl-toggle" disabled>VIP access</label>
   </div>
 
   <div class="pl-icons">
@@ -269,3 +270,17 @@
   </div>
 
 </div>
+
+<script>
+  document.querySelectorAll('.pl-stepper-control').forEach(function(ctrl){
+    var span = ctrl.querySelector('span');
+    var min = 1, max = 10;
+    var n = parseInt(span.textContent, 10) || min;
+    ctrl.querySelectorAll('button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        n = Math.min(max, Math.max(min, n + parseInt(btn.dataset.step, 10)));
+        span.textContent = n;
+      });
+    });
+  });
+</script>
