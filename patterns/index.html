@@ -57,13 +57,25 @@
   .pl-field label{ font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.1em; color:var(--steel); text-transform:uppercase; }
   .pl-field input{ font-family:'Space Mono', monospace; font-size:13px; color:var(--warm-white); background:var(--forest); border:1px solid rgba(98,108,114,.45); border-radius:999px; padding:11px 18px; width:100%; max-width:320px; }
 
-  .pl-buttons{ margin:16px 0 0; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-  .pl-btn{ font-family:'Archivo', sans-serif; font-size:13px; font-weight:700; border-radius:999px; padding:11px 26px; cursor:pointer; border:1px solid var(--iac-green); transition:transform .08s ease, background .15s ease, box-shadow .15s ease; }
+  .pl-buttons{ margin:16px 0 0; display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .pl-btn{ font-family:'Archivo', sans-serif; font-size:13px; font-weight:700; border-radius:999px; padding:11px 20px; cursor:pointer; border:1px solid var(--iac-green); transition:background .15s ease, box-shadow .15s ease; }
   .pl-btn.primary{ color:var(--carbon); background:var(--iac-green); }
   .pl-btn.primary:hover{ background:#00b868; box-shadow:0 0 14px 2px rgba(0,155,88,.4); }
-  .pl-btn.secondary{ color:var(--copper); background:transparent; border-color:var(--copper); padding:11px 22px; }
+  .pl-btn.secondary{ color:var(--copper); background:transparent; border-color:var(--copper); }
   .pl-btn.secondary:hover{ background:rgba(199,139,86,.12); box-shadow:0 0 10px 1px rgba(199,139,86,.3); }
-  .pl-btn:active{ transform:scale(.94); }
+  .pl-btn.tertiary{ color:var(--signal); background:transparent; border-color:var(--signal); }
+  .pl-btn.tertiary:hover{ background:rgba(0,221,160,.12); box-shadow:0 0 10px 1px rgba(0,221,160,.3); }
+  .pl-btn.quaternary{ color:var(--carbon); background:var(--spark); border-color:var(--spark); }
+  .pl-btn.quaternary:hover{ background:#ffe14d; box-shadow:0 0 14px 2px rgba(255,214,10,.4); }
+
+  @keyframes pl-anim-squeeze{ 0%{ transform:scale(1); } 40%{ transform:scale(.88); } 100%{ transform:scale(1); } }
+  @keyframes pl-anim-shake{ 0%,100%{ transform:translateX(0); } 20%{ transform:translateX(-6px); } 40%{ transform:translateX(5px); } 60%{ transform:translateX(-3px); } 80%{ transform:translateX(2px); } }
+  @keyframes pl-anim-pulse{ 0%{ box-shadow:0 0 0 0 rgba(0,221,160,.5); } 100%{ box-shadow:0 0 0 16px rgba(0,221,160,0); } }
+  @keyframes pl-anim-bounce{ 0%{ transform:translateY(0); } 30%{ transform:translateY(-9px); } 55%{ transform:translateY(0); } 75%{ transform:translateY(-3px); } 100%{ transform:translateY(0); } }
+  .pl-btn.anim-squeeze{ animation:pl-anim-squeeze .35s ease; }
+  .pl-btn.anim-shake{ animation:pl-anim-shake .4s ease; }
+  .pl-btn.anim-pulse{ animation:pl-anim-pulse .5s ease-out; }
+  .pl-btn.anim-bounce{ animation:pl-anim-bounce .5s ease; }
 
   .pl-section-label{ font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.1em; color:var(--steel); text-transform:uppercase; }
 
@@ -73,12 +85,12 @@
   .ts-tile{ flex:1 1 140px; position:relative; background:var(--forest); border:1px solid rgba(98,108,114,.45); border-radius:14px; padding:14px 10px 12px; text-align:center; cursor:pointer; transition:transform .08s ease, border-color .15s ease, box-shadow .15s ease, background .15s ease; }
   .ts-tile:hover{ border-color:rgba(0,221,160,.65); box-shadow:0 0 12px 1px rgba(0,221,160,.25); }
   .ts-tile:active{ transform:scale(.98); }
-  .ts-tile--on{ background:linear-gradient(rgba(0,155,88,.1), rgba(0,155,88,.1)), var(--forest); border-color:var(--iac-green); box-shadow:0 0 18px 3px rgba(0,155,88,.35), inset 0 0 0 1px var(--iac-green); }
-  .ts-tile--on:hover{ border-color:var(--iac-green); box-shadow:0 0 22px 4px rgba(0,155,88,.45), inset 0 0 0 1px var(--iac-green); }
+  .ts-tile:has(input:checked){ background:linear-gradient(rgba(0,155,88,.1), rgba(0,155,88,.1)), var(--forest); border-color:var(--iac-green); box-shadow:0 0 18px 3px rgba(0,155,88,.35), inset 0 0 0 1px var(--iac-green); }
+  .ts-tile:has(input:checked):hover{ border-color:var(--iac-green); box-shadow:0 0 22px 4px rgba(0,155,88,.45), inset 0 0 0 1px var(--iac-green); }
   .ts-tile input{ position:absolute; top:9px; right:9px; appearance:none; width:16px; height:16px; border-radius:50%; border:2px solid rgba(98,108,114,.7); background:transparent; cursor:pointer; margin:0; }
-  .ts-tile--on input{ border-color:var(--iac-green); background:var(--iac-green); }
+  .ts-tile input:checked{ border-color:var(--iac-green); background:var(--iac-green); }
   .ts-tile .day{ font-family:'Archivo', sans-serif; font-weight:700; font-size:14px; color:var(--warm-white); }
-  .ts-tile--on .day, .ts-tile--on .time{ color:var(--signal); }
+  .ts-tile:has(input:checked) .day, .ts-tile:has(input:checked) .time{ color:var(--signal); }
   .ts-tile .time{ font-family:'Space Mono', monospace; font-size:11px; color:var(--steel); margin-top:4px; }
 
   .pl-controls{ margin:20px 0 0; display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; padding:22px 14px; background:var(--forest); border:1px solid rgba(98,108,114,.4); border-radius:14px; }
@@ -270,8 +282,10 @@
   </div>
 
   <div class="pl-buttons">
-    <button type="button" class="pl-btn primary">Sign Me Up</button>
-    <button type="button" class="pl-btn secondary">Maybe Later</button>
+    <button type="button" class="pl-btn primary" data-anim="squeeze" data-tone="confirm">Sign Me Up</button>
+    <button type="button" class="pl-btn secondary" data-anim="shake" data-tone="decline">Maybe Later</button>
+    <button type="button" class="pl-btn tertiary" data-anim="pulse" data-tone="remind">Remind Me</button>
+    <button type="button" class="pl-btn quaternary" data-anim="bounce" data-tone="share">Share Invite</button>
   </div>
 
   <div class="pl-tiles">
@@ -287,7 +301,7 @@
         <div class="day">Wed Dec 9</div>
         <div class="time">7:00 AM</div>
       </label>
-      <label class="ts-tile ts-tile--on">
+      <label class="ts-tile">
         <input type="radio" name="pl-tile" checked aria-label="Fri Dec 11, 9:00 AM">
         <div class="day">Fri Dec 11</div>
         <div class="time">9:00 AM</div>
@@ -491,12 +505,57 @@
       }catch(e){}
     }
     document.addEventListener('click', function(e){
-      if(e.target.closest('button, input[type="checkbox"], input[type="radio"]')){
+      var el = e.target.closest('button, input[type="checkbox"], input[type="radio"]');
+      if(el && !el.hasAttribute('data-tone')){
         playClick();
       }
     });
     document.querySelectorAll('select').forEach(function(sel){
       sel.addEventListener('change', playClick);
+    });
+  })();
+
+  (function(){
+    var toneCtx;
+    function tone(freqs, type, dur){
+      try{
+        toneCtx = toneCtx || new (window.AudioContext || window.webkitAudioContext)();
+        var startAt = toneCtx.currentTime;
+        freqs.forEach(function(f, i){
+          var t = startAt + i * dur;
+          var osc = toneCtx.createOscillator();
+          var gain = toneCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(f, t);
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.linearRampToValueAtTime(0.05, t + dur * 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+          osc.connect(gain);
+          gain.connect(toneCtx.destination);
+          osc.start(t);
+          osc.stop(t + dur + 0.02);
+        });
+      }catch(e){}
+    }
+    var tones = {
+      confirm: function(){ tone([523.25, 659.25], 'sine', 0.16); },
+      decline: function(){ tone([392.00], 'sine', 0.22); },
+      remind: function(){ tone([440.00, 554.37], 'triangle', 0.14); },
+      share: function(){ tone([659.25, 783.99, 987.77], 'sine', 0.11); }
+    };
+    document.querySelectorAll('.pl-buttons .pl-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var anim = btn.dataset.anim;
+        var toneName = btn.dataset.tone;
+        if(anim){
+          btn.classList.add('anim-' + anim);
+          btn.addEventListener('animationend', function handler(){
+            btn.classList.remove('anim-' + anim);
+            btn.removeEventListener('animationend', handler);
+          });
+        }
+        if(toneName && tones[toneName]) tones[toneName]();
+      });
     });
   })();
 
